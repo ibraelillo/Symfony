@@ -44,7 +44,15 @@ class Gallery extends BaseGallery
     {
         $this->galleryHasMedias = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
+    public function getPortada()
+    {
+        if(count($this->galleryHasMedias) > 0 && $this->galleryHasMedias[0]->getMedia() != null)
+            return $this->galleryHasMedias[0]->getMedia();
+
+        return null;
+    }
+
     /**
      * Add galleryHasMedias
      *

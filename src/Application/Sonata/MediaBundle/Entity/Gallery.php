@@ -11,15 +11,10 @@
 
 namespace Application\Sonata\MediaBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Sonata\MediaBundle\Entity\BaseGallery as BaseGallery;
 use Sonata\MediaBundle\Model\GalleryHasMediaInterface;
 
-/**
- *
- *
- * @ORM\Entity()
- */
+
 class Gallery extends BaseGallery
 {
     /**
@@ -27,11 +22,6 @@ class Gallery extends BaseGallery
      */
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Gwada\GitesBundle\Entity\Location",
-     *              inversedBy="galerias", cascade={"persist", "remove"} )
-     */
-    private $location;
 
     /**
      * Get id

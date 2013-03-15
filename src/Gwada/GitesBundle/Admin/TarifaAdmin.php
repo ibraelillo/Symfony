@@ -25,37 +25,32 @@ class TarifaAdmin extends Admin
             ->add('alta')
             ->add('media')
             ->add('baja')
-            ->add('enabled', null, array('required' => false))
+            ->add('activo', 'choice', array(
+                'choices' =>  array(
+                    1 => 'Alta', 2 => 'Media', 3 => 'Baja'
+                ), 'expanded' => true
+            ))
         ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('nombre')
-            ->add('direccion')
-        ;
-    }
-
-    protected function configureListFields(ListMapper $listMapper)
-    {
-        $listMapper
-            ->addIdentifier('location')
             ->add('alta')
             ->add('media')
             ->add('baja')
         ;
     }
 
-    public function getTemplate($name)
+    protected function configureListFields(ListMapper $listMapper)
     {
-        switch ($name) {
-            case 'money':
-                return 'GitesBundle:Admin:money.html.twig';
-                break;
-            default:
-                return parent::getTemplate($name);
-                break;
-        }
+        $listMapper
+            ->addIdentifier('precio_actual', 'money', array('template' => 'GitesBundle:Admin:money.html.twig'))
+            ->addIdentifier('location', 'Gwada\GitesBundle\Entity\Location')
+            ->add('alta', 'money', array('template' => 'GitesBundle:Admin:money.html.twig'))
+            ->add('media', 'money', array('template' => 'GitesBundle:Admin:money.html.twig'))
+            ->add('baja', 'money', array('template' => 'GitesBundle:Admin:money.html.twig'))
+        ;
     }
+
 }

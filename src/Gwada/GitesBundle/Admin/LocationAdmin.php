@@ -32,7 +32,7 @@ class LocationAdmin extends Admin
             ->add('capacidad')
             ->add('descripcion')
             ->add('precio_base')
-            ->add('galerias')
+            ->add('gallery')
         ;
     }
 

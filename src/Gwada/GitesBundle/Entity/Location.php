@@ -59,9 +59,10 @@ class Location
     protected $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="Application\Sonata\MediaBundle\Entity\Gallery", mappedBy="location", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Gallery", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\JoinColumn(name="gallery_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $galerias;
+    protected $gallery;
 
     /**
      * @ORM\OneToMany(targetEntity="Reservacion", mappedBy="location", cascade={"persist", "remove"})
@@ -74,14 +75,6 @@ class Location
         return $this->getNombre();
     }
 
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->galerias = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
 
     public function getPrecio()
@@ -240,38 +233,6 @@ class Location
         return $this->precio_base;
     }
 
-    /**
-     * Add galerias
-     *
-     * @param \Application\Sonata\MediaBundle\Entity\Gallery $galerias
-     * @return Location
-     */
-    public function addGaleria(\Application\Sonata\MediaBundle\Entity\Gallery $galerias)
-    {
-        $this->galerias[] = $galerias;
-    
-        return $this;
-    }
-
-    /**
-     * Remove galerias
-     *
-     * @param \Application\Sonata\MediaBundle\Entity\Gallery $galerias
-     */
-    public function removeGaleria(\Application\Sonata\MediaBundle\Entity\Gallery $galerias)
-    {
-        $this->galerias->removeElement($galerias);
-    }
-
-    /**
-     * Get galerias
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getGalerias()
-    {
-        return $this->galerias;
-    }
 
     /**
      * Add reservaciones
@@ -304,5 +265,35 @@ class Location
     public function getReservaciones()
     {
         return $this->reservaciones;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->reservaciones = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Set gallery
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Gallery $gallery
+     * @return Location
+     */
+    public function setGallery(\Application\Sonata\MediaBundle\Entity\Gallery $gallery = null)
+    {
+        $this->gallery = $gallery;
+    
+        return $this;
+    }
+
+    /**
+     * Get gallery
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Gallery 
+     */
+    public function getGallery()
+    {
+        return $this->gallery;
     }
 }

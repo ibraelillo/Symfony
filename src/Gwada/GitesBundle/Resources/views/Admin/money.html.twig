@@ -1,1 +1,7 @@
-{{ value }}&euro;
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if value is not null %}
+        {{ value }} &euro;
+    {% endif %}
+{% endblock %}

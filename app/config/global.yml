@@ -1,0 +1,7 @@
+parameters:
+    entreprise: Casas Thomanon
+
+twig:
+    globals:
+        plantilla: '::base.html.twig'
+        entreprise: Casas Thomanon

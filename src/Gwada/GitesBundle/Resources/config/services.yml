@@ -1,0 +1,15 @@
+parameters:
+#    gites.example.class: Gwada\GitesBundle\Example
+
+services:
+    gites.location.admin.location:
+        class: Gwada\GitesBundle\Admin\LocationAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: gites, label: Gites }
+        arguments: [null, Gwada\GitesBundle\Entity\Location, GitesBundle:LocationAdmin]
+
+    gites.location.admin.tarifa:
+        class: Gwada\GitesBundle\Admin\TarifaAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: gites, label: Tarifas }
+        arguments: [null, Gwada\GitesBundle\Entity\Tarifa, GitesBundle:TarifaAdmin ]

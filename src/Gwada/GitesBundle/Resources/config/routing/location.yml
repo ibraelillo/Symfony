@@ -1,0 +1,10 @@
+location:
+    pattern:  /
+    defaults: { _controller: "GitesBundle:Location:index" }
+
+location_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "GitesBundle:Location:show" }
+
+
+

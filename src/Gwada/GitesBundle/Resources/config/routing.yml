@@ -1,0 +1,5 @@
+location_routes:
+    resource: "@GitesBundle/Resources/config/routing/location.yml"
+    prefix: /locations
+
+

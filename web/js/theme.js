@@ -24,12 +24,12 @@ $(function () {
     });
     
     // scroll navigation functionality
-    $('.scroller').click(function(){
+   /* $('.scroller').click(function(){
     	var section = $($(this).data("section"));
     	var top = section.offset().top;
         $("html, body").animate({ scrollTop: top }, 700);
         return false;
-    });
+    });*/
 
     // FAQs
     var $faqs = $("#faq .faq");

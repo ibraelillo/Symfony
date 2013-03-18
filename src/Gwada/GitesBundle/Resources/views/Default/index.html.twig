@@ -1,1 +1,163 @@
-Hello {{ name }}!
+{% extends "::frontend.html.twig" %}
+
+{% block title %}Gites à Guadeloupe{% endblock %}
+
+{% block templates %}
+<script type="text/template" id="location-detail">
+    <h1 class="header"><a href="#!/location/<%=slug%>"><%=nombre%></a></h1>
+
+    <div id="myCarousel" class="carousel slide">
+        <ol class="carousel-indicators">
+        <% var i; for(i = 0; i < gallery.length; i++ ){ %>
+            <li data-target="#myCarousel" data-slide-to="<%=i%>" <% if(i == 0 ) { %>class="active"<% } %>></li>
+        <% } %>
+        </ol>
+        <!-- Carousel items -->
+        <div class="carousel-inner">
+            <% var i; for(i = 0; i < gallery.length; i++ ){ %>
+            <div class="<% if(i == 0 ) { %>active <% } %>item">
+                <img class="post_pic span7" src="<%=gallery[i].big%>" />
+            </div>
+            <% } %>
+        </div>
+        <!-- Carousel nav -->
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    </div>
+        <p><strong>Capacit&eacute;:</strong> <%=capacidad%> personnes</p>
+        <p><strong>Prix:</strong> <%=precio%>&euro; par semaine</p>
+        <p><address><%=direccion%></address></p>
+        <p><a class="btn btn-success btn-large" href="#!/location/<%=slug%>/reservar">R&eacute;server!</a></p>
+    <div class="post_content">
+        <p><%=descripcion%></p>
+    </div>
+</script>
+
+<script type="text/template" id="location-preview">
+        <div class="row">
+            <div class="span3">
+                <a href="#!/location/<%=slug%>">
+                    <img class="main_pic" alt="main pic" src="<%=portada%>" />
+                </a>
+            </div>
+            <div class="span4 info">
+                <a href="#!/location/<%=slug%>">
+                    <h3><%=nombre%></h3>
+                </a>
+                <p><%=truncate(descripcion, 200, true) %></p>
+                <div class="post_info">
+                    <div class="author">
+                        Capacit&eacute;
+                    </div>
+                    <div class="date">
+                        <%=capacidad%> personnes
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#!/location/<%=slug%>" class="btn">Plus d' info</a>
+</script>
+<script type="text/template" id="location-slide">
+       <div class="row">
+            <div class="span6 <% if(precio > 400 && precio < 600 ){ %>animated fadeInDownBig<% } else { %>animated fadeInUpBig<% } %>">
+                <img src="<%=portada%>" alt="<%=nombre%>" />
+            </div>
+            <div class="span4 <% if(precio > 400 && precio < 600 ){ %>animated fadeInUpBig<% } else { %>animated fadeInDownBig<% } %>">
+                <h1>
+                    <%=nombre%>
+                </h1>
+                <p>
+                    <%=truncate(descripcion, 200, true)%>
+                </p>
+                <a href="#!/location/<%=slug%>" class="btn btn-success btn-large">
+                    Réserver!
+                </a>
+            </div>
+        </div>
+</script>
+<script type="text/template" id="location-features">
+    <a href="#!/location/<%=slug%>"><img src="<%=portada%>" alt="<%=nombre%>" class="thumb" width="80%" /></a>
+    <h3><i class="i_cloud"></i> <%=nombre%></h3>
+    <p class="description"><%=truncate(descripcion, 200, true)%></p>
+    <a href="#!/location/<%=slug%>" class="btn btn-default">Plus d'info</a>
+</script>
+<script type="text/template" id="location-pricing">
+    <div class="price_wrapper <%=clasif %> <% if (clasif != 'pro') { %>regular <% } %>">
+        <div class="header">
+            <span><%=nombre%></span>
+            <div class="price">
+                <span><%=precio%> &euro;</span>
+                Par semaine
+            </div>
+        </div>
+        <div class="section">
+            <h3>Passages of Lorem randomised
+                words which look slightly.</h3>
+            <ul class="perks">
+                <% if(cocina) { %><li><i class="i_shuffle"></i>Cuisine</li><% } %>
+                <% if(piscina) { %><li><i class="i_shuffle"></i>Piscine</li><% } %>
+                <li>
+                    <i class="i_loading"></i>
+                    Fast-loading
+                </li>
+            </ul>
+            <a href="#" class="btn">Order now</a>
+        </div>
+    </div>
+</script>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var truncate = function(cad, length, radical){
+            if(!radical){
+                return cad.length < length ? cad : cad.substr(0, length)+'...';
+            }
+            else{
+                var aux, i = length, result = cad.substr(0,length);
+                while(i < cad.length && (aux = cad.substr(i, 1)) != undefined && aux != ' ' ){
+                    result += aux;
+                    i++;
+                }
+                return result+'...';
+            }
+        }
+        var App = App || {
+            container: '#content',
+            Settings : {
+                css: {
+                    bootstrap: '{{ asset('css/bootstrap.min.css') }}',
+                    responsive: '{{ asset('css/bootstrap-responsive.min.css') }}',
+                    theme: '{{ asset('css/theme.css') }}',
+                    animate: '{{ asset('css/bootstrap.min.css') }}',
+                    blog: '{{ asset('css/blog.css') }}'
+                },
+                logo: '{{ asset('img/logo.png') }}',
+                urlLocations: "{{ path('location') }}",
+                ajax_loader: '{{ asset('img/ajax-loader.gif') }}',
+            },
+            User: {% if is_granted('ROLE_USER') %}{
+                nombre: '{{ app.user.nombre }}',
+                roles: [{% for rol in app.user.roles %}'{{ rol }}'{{  loop.index != loop.last ? ', ' : ''}}{% endfor %}],
+                reservaciones: null
+            }{% else  %}null{% endif %}
+        };
+
+    </script>
+    <script type="text/javascript" src="{{ asset('js/App.js') }}"></script>
+    <script type="text/javascript">
+        $(function(){
+            App.init();
+            /*new App.SliderView({ collection: gites, el: $("#hero")});
+            new App.FeaturesView({ collection: gites, el: $("#features") });
+            new App.PricesView({ collection: gites, el: $("#pricing")});*/
+        });
+    </script>
+{% endblock %}
+
+
+

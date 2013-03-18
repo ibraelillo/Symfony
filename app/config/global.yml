@@ -5,3 +5,11 @@ twig:
     globals:
         plantilla: '::base.html.twig'
         entreprise: Casas Thomanon
+
+
+
+services:
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+        - { name: twig.extension }

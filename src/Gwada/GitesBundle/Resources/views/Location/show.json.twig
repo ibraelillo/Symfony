@@ -1,0 +1,22 @@
+{% spaceless %}
+    {
+        "nombre": "{{ e.nombre|title }}",
+        "url":  "{{ path('location_show', { 'id': e.id }) }}",
+        "capacidad": {{ e.capacidad }},
+        "direccion": "{{ e.direccion }}",
+        "descripcion": "{{ e.descripcion|json_encode }}",
+        "precio": {{ e.precio }},
+        "slug": "{{ e.slug }}",
+        "portada": "{% set portada %}{% path e.gallery.portada, 'big' %}{% endset %}{{ asset(portada) }}",
+        "gallery": [
+        {% for g in e.gallery.galleryHasMedias %}
+            {% set big %}{% path g.media, 'big' %}{% endset %}
+            {% set thumb %}{% path g.media, 'small' %}{% endset %}
+            {% if big is not empty %}
+                { "big": "{{ asset(big) }}", "thumb": "{{ asset(thumb) }}"}{% if loop.index != loop.last %},{% endif %}
+            {% endif %}
+        {% endfor %}
+        ],
+        "comments":[]
+    }
+{% endspaceless %}

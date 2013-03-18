@@ -6,6 +6,7 @@ imports:
     - { resource: gedmo.yml }
 
 
+
 framework:
     #esi:             ~
     #translator:      { fallback: %locale% }

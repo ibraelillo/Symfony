@@ -5,9 +5,12 @@ gites:
 
 pagina_estatica:
     pattern: /site/{tpl}
-    defaults: { _controller: "LocationBundle:Default:estatica" }
+    defaults: { _controller: "GitesBundle:Default:estatica" }
 
 
+portada:
+    pattern: /
+    defaults: { _controller: "GitesBundle:Default:index" }
 
 
 ## rutas de sonata

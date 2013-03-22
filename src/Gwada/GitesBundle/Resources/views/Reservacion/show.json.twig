@@ -1,0 +1,10 @@
+{% spaceless %}
+    {
+        "nombre": "{{ r.nombre|title }}",
+        "url":  "{{ path('location_reservaciones_show', { 'slug': r.location.slug, 'id': r.id }) }}",
+        "id": "{{ r.id }}",
+        "email": "{{ r.email }}",
+        "fecha_entrada":"{{ r.fechaEntrada.timestamp }}",
+        "fecha_salida": "{{ r.fechaSalida.timestamp }}"
+    }
+{% endspaceless %}

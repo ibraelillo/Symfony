@@ -2,4 +2,8 @@ location_routes:
     resource: "@GitesBundle/Resources/config/routing/location.yml"
     prefix: /locations
 
+reservaciones_routes:
+    resource: "@GitesBundle/Resources/config/routing/reservacion.yml"
+    prefix: /locations/{slug}/reservaciones
+
 

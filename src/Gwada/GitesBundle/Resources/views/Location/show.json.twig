@@ -11,12 +11,22 @@
         "gallery": [
         {% for g in e.gallery.galleryHasMedias %}
             {% set big %}{% path g.media, 'big' %}{% endset %}
+            {% set medium %}{% path g.media, 'medium' %}{% endset %}
             {% set thumb %}{% path g.media, 'small' %}{% endset %}
-            {% if big is not empty %}
-                { "big": "{{ asset(big) }}", "thumb": "{{ asset(thumb) }}"}{% if loop.index != loop.last %},{% endif %}
+            {% if big is not empty  %}
+                { "big": "{{ asset(big) }}", "thumb": "{{ asset(thumb) }}" , "medium": "{{ asset(medium) }}"}{% if loop.index != loop.last %},{% endif %}
             {% endif %}
         {% endfor %}
         ],
-        "comments":[]
+        "comments":[],
+        "reservaciones":[
+            {% for r in e.reservaciones %}{
+                "id": "{{ r.id }}",
+                "email": "{{ r.email }}",
+                "start":"{{ r.fechaEntrada|date('Y-m-d') }}",
+                "end": "{{ r.fechaSalida|date('Y-m-d') }}"
+            }{{ loop.index != loop.last ? ',':'' }}
+            {% endfor %}
+        ]
     }
 {% endspaceless %}

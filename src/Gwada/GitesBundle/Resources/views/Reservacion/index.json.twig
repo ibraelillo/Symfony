@@ -1,0 +1,11 @@
+{% spaceless %}
+[
+    {% for r in entities %}{
+        "id": "{{ r.id }}",
+        "email": "{{ r.email }}",
+        "fecha_entrada":"{{ r.fechaEntrada.timestamp }}",
+        "fecha_salida": "{{ r.fechaSalida.timestamp }}"
+    }{{ loop.index != loop.last ? ',':'' }}
+    {% endfor %}
+]
+{% endspaceless %}

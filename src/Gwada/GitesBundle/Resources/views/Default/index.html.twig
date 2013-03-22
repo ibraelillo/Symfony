@@ -3,34 +3,34 @@
 {% block title %}Gites à Guadeloupe{% endblock %}
 
 {% block templates %}
+<script type="text/template" id="portfolio">
+    <% var i, j=0; for(i = 4; i <= gallery.length+3; i+=4){ %>
+        <% var fotos = gallery.slice(j, Math.min(i,gallery.length)) %>
+        <div class="row-fluid">
+            <ul class="thumbnails">
+                <% _.each(fotos, function(img){ %>
+                <li class="span3">
+                    <div class="thumbnail">
+                        <div class="pic">
+                            <a href="#">
+                                <img class="pic" alt="<%=nombre%>" src="<%=img.big%>">
+                                <img class="see_more" src="{{ asset('img/thumb_more.png') }}">
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <% }); %>
+            </ul>
+        </div>
+    <% j = i; } %>
+</script>
+
 <script type="text/template" id="location-detail">
     <h1 class="header"><a href="#!/location/<%=slug%>"><%=nombre%></a></h1>
-
-    <div id="myCarousel" class="carousel slide">
-        <ol class="carousel-indicators">
-        <% var i; for(i = 0; i < gallery.length; i++ ){ %>
-            <li data-target="#myCarousel" data-slide-to="<%=i%>" <% if(i == 0 ) { %>class="active"<% } %>></li>
-        <% } %>
-        </ol>
-        <!-- Carousel items -->
-        <div class="carousel-inner">
-            <% var i; for(i = 0; i < gallery.length; i++ ){ %>
-            <div class="<% if(i == 0 ) { %>active <% } %>item">
-                <img class="post_pic span7" src="<%=gallery[i].big%>" />
-            </div>
-            <% } %>
-        </div>
-        <!-- Carousel nav -->
-        <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-        <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-    </div>
-        <p><strong>Capacit&eacute;:</strong> <%=capacidad%> personnes</p>
-        <p><strong>Prix:</strong> <%=precio%>&euro; par semaine</p>
-        <p><address><%=direccion%></address></p>
-        <p><a class="btn btn-success btn-large" href="#!/location/<%=slug%>/reservar">R&eacute;server!</a></p>
-    <div class="post_content">
-        <p><%=descripcion%></p>
-    </div>
+    <p><strong>Capacit&eacute;:</strong> <%=capacidad%> personnes</p>
+    <p><strong>Prix:</strong> <%=precio%>&euro; par semaine</p>
+    <p><address><%=direccion%></address></p>
+    <div class="post_content"><p><%=descripcion%></p></div>
 </script>
 
 <script type="text/template" id="location-preview">
@@ -42,15 +42,15 @@
             </div>
             <div class="span4 info">
                 <a href="#!/location/<%=slug%>">
-                    <h3><%=nombre%></h3>
+                    <h3><i class="icon-home"></i> <%=nombre%></h3>
                 </a>
                 <p><%=truncate(descripcion, 200, true) %></p>
                 <div class="post_info">
                     <div class="author">
-                        Capacit&eacute;
+                        <span rel="tooltip" title="Maximum <%=capacidad%> personnes"><b class="icon-group"></b> <%=capacidad%> personnes</span>
                     </div>
                     <div class="date">
-                        <%=capacidad%> personnes
+
                     </div>
                 </div>
             </div>
@@ -60,18 +60,12 @@
 <script type="text/template" id="location-slide">
        <div class="row">
             <div class="span6 <% if(precio > 400 && precio < 600 ){ %>animated fadeInDownBig<% } else { %>animated fadeInUpBig<% } %>">
-                <img src="<%=portada%>" alt="<%=nombre%>" />
+                <a href="#!/location/<%=slug%>" title="<%=nombre%>"><img src="<%=portada%>" alt="<%=nombre%>" /></a>
             </div>
             <div class="span4 <% if(precio > 400 && precio < 600 ){ %>animated fadeInUpBig<% } else { %>animated fadeInDownBig<% } %>">
-                <h1>
-                    <%=nombre%>
-                </h1>
-                <p>
-                    <%=truncate(descripcion, 200, true)%>
-                </p>
-                <a href="#!/location/<%=slug%>" class="btn btn-success btn-large">
-                    Réserver!
-                </a>
+                <h1><a href="#!/location/<%=slug%>"> <%=nombre%></a></h1>
+                <p><%=truncate(descripcion, 200, true)%></p>
+                <a href="#!/location/<%=slug%>/reservar" class="btn btn-success btn-large">Réserver!</a>
             </div>
         </div>
 </script>
@@ -79,7 +73,7 @@
     <a href="#!/location/<%=slug%>"><img src="<%=portada%>" alt="<%=nombre%>" class="thumb" width="80%" /></a>
     <h3><i class="i_cloud"></i> <%=nombre%></h3>
     <p class="description"><%=truncate(descripcion, 200, true)%></p>
-    <a href="#!/location/<%=slug%>" class="btn btn-default">Plus d'info</a>
+    <a href="#!/location/<%=slug%>" class="btn btn-default"><i class="icon-search"></i> Plus...</a>
 </script>
 <script type="text/template" id="location-pricing">
     <div class="price_wrapper <%=clasif %> <% if (clasif != 'pro') { %>regular <% } %>">
@@ -101,7 +95,7 @@
                     Fast-loading
                 </li>
             </ul>
-            <a href="#" class="btn">Order now</a>
+            <a href="#!/location/<%=slug%>" class="btn"><i class="icon-calendar"></i> R&eacute;server</a>
         </div>
     </div>
 </script>
@@ -138,7 +132,7 @@
                 },
                 logo: '{{ asset('img/logo.png') }}',
                 urlLocations: "{{ path('location') }}",
-                ajax_loader: '{{ asset('img/ajax-loader.gif') }}',
+                ajax_loader: '{{ asset('img/ajax-loader.gif') }}'
             },
             User: {% if is_granted('ROLE_USER') %}{
                 nombre: '{{ app.user.nombre }}',

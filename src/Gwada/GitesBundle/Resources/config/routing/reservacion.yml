@@ -1,0 +1,30 @@
+location_reservaciones:
+    pattern:  /
+    defaults: { _controller: "GitesBundle:Reservacion:index" }
+
+location_reservaciones_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "GitesBundle:Reservacion:show" }
+
+location_reservaciones_new:
+    pattern:  /new
+    defaults: { _controller: "GitesBundle:Reservacion:new" }
+
+location_reservaciones_create:
+    pattern:  /create
+    defaults: { _controller: "GitesBundle:Reservacion:create" }
+    requirements: { _method: post }
+
+location_reservaciones_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "GitesBundle:Reservacion:edit" }
+
+location_reservaciones_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "GitesBundle:Reservacion:update" }
+    requirements: { _method: post|put }
+
+location_reservaciones_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "GitesBundle:Reservacion:delete" }
+    requirements: { _method: post|delete }

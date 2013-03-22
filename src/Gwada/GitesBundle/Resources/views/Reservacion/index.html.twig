@@ -1,0 +1,49 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Reservacion list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Telefono</th>
+                <th>Nombre</th>
+                <th>Fecha_entrada</th>
+                <th>Fecha_publicacion</th>
+                <th>Fecha_salida</th>
+                <th>Capacidad</th>
+                <th>Confirmada</th>
+                <th>Atendida</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('location_reservaciones_show', { 'slug': entity.location.slug, 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.telefono }}</td>
+                <td>{{ entity.nombre }}</td>
+                <td>{% if entity.fechaentrada %}{{ entity.fechaentrada|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.fechapublicacion %}{{ entity.fechapublicacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.fechasalida %}{{ entity.fechasalida|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.capacidad }}</td>
+                <td>{{ entity.confirmada }}</td>
+                <td>{{ entity.atendida }}</td>
+                <td>
+                <ul>
+
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+        </li>
+    </ul>
+    {% endblock %}

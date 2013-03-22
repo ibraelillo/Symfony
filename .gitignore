@@ -167,3 +167,4 @@ app/logs
 vendor/
 projectFilesBackup
 .idea
+web/img/fixtures/

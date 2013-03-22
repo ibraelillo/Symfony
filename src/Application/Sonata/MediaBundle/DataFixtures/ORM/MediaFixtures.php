@@ -19,6 +19,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Gwada\GitesBundle\Entity\Location;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 class MediaFixtures extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
@@ -36,24 +37,33 @@ class MediaFixtures extends AbstractFixture implements OrderedFixtureInterface, 
             $gallery = new Gallery();
             $gallery->setContext('default');
             $gallery->setName($loc->getNombre());
-            $gallery->setDefaultFormat('big');
+            $gallery->setDefaultFormat('default_big');
             $gallery->setEnabled(true);
 
+            $directorio= $this->container->getParameter('kernel.root_dir')."/../web/img/fixtures/".$loc->getSlug();
 
-            for($i = 0 ; $i < 4; $i++)
+            $fotos  = scandir($directorio);
+
+            print_r($fotos);
+
+            for($i = 0 ; $i < count($fotos); $i++)
             {
-                $media = new Media();
-                $media->setName($loc->getNombre().' '.$i);
-                $media->setContext('default'); // video related to the user
-                $media->setProviderName('sonata.media.provider.image');
-                $media->setProviderStatus(1);
-                $media->setProviderReference("sonata.media.provider.image");
-                $media->setEnabled(true);
 
-                $ghm = new GalleryHasMedia();
-                $ghm->setMedia($media);
+                if(!in_array($fotos[$i], array('.', '..'))){
+                    $media = new Media();
+                    $media->setName($loc->getNombre().' '.$i);
+                    $media->setContext('default'); // video related to the user
+                    $media->setProviderName('sonata.media.provider.image');
+                    $media->setProviderStatus(1);
+                    $media->setProviderReference("sonata.media.provider.image");
+                    $media->setEnabled(true);
+                    $media->setBinaryContent(new File($directorio.'/'.$fotos[$i]));
 
-                $gallery->addGalleryHasMedias($ghm);
+                    $ghm = new GalleryHasMedia();
+                    $ghm->setMedia($media);
+
+                    $gallery->addGalleryHasMedias($ghm);
+                }
             }
 
             $loc->setGallery($gallery);

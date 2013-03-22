@@ -66,6 +66,7 @@ class Location
 
     /**
      * @ORM\OneToMany(targetEntity="Reservacion", mappedBy="location", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="id", referencedColumnName="location_id", onDelete="CASCADE")
      */
     protected $reservaciones;
 

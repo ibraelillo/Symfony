@@ -285,7 +285,7 @@ class Reservacion
      * @param \Gites\LocationBundle\Entity\Location $location
      * @return Reservacion
      */
-    public function setLocation(\Gites\LocationBundle\Entity\Location $location = null)
+    public function setLocation(Location $location = null)
     {
         $this->location = $location;
     

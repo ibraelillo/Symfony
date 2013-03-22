@@ -15,8 +15,8 @@ App.getActiveCollection= function(){
     }
     return this.collection;
 };
-App.loading = function(){
-    new App.LoadingView().render();
+App.loading = function(el){
+    new App.LoadingView({ el: $(el)}).render();
 };
 
 App.loaded = function(){
@@ -25,6 +25,7 @@ App.loaded = function(){
 
 
 App.init = function(){
+
     new App.NavbarView();
 
     this.getActiveCollection().on('request', this.loading, this);
@@ -39,24 +40,27 @@ App.init = function(){
     });
 };
 
+// modelos
 App.Tarifa = Backbone.Model.extend();
 App.Gallery = Backbone.Model.extend();
 App.Reservacion = Backbone.Model.extend({
-   defaults: {
-       user: null,
-       start: '',
-       end: '',
-       location: ''
-   },
-   url: function(){
-       return this.get('url') ? this.get('url') : this.collection.url;
+    schema: {
+        Titre:         { type: 'Select', options: ['Mr', 'Mrs', 'Ms'], help: 'Test de help' },
+        nombre:         'Text',
+        email:          { validators: ['required', 'email'] },
+        telefono:       'Text',
+        capacidad:      { type: 'Text'},
+        confirmada:     { type: 'Checkbox'}
+
+    },
+   urlRoot: function(){
+       return this.get('url') ? this.get('url') : this.collection.url + (this.isNew() ? 'create' : 'update');
    }
 });
 App.Location = Backbone.Model.extend({
-    reservaciones: [],
+    reservaciones: null,
     initialize: function(){
-        this.reservaciones = new App.ReservacionesCollection(this.get('reservaciones'));
-
+        this.reservaciones = new App.ReservacionesCollection([],{ url: this.get('reservacionesUrl')});
         if(this.get('capacidad') > 1 && this.get('capacidad') < 6)
             this.set('clasif', 'lite');
         else if (this.get('capacidad') >= 5 && this.get('capacidad') < 9)
@@ -76,10 +80,14 @@ App.Location = Backbone.Model.extend({
     }
 });
 
-App.ReservacionesCollection = Backbone.Collection.extend({
-    model: App.Reservacion
-})
 
+// colleciones
+App.ReservacionesCollection = Backbone.Collection.extend({
+    model: App.Reservacion,
+    initialize: function(models, options){
+        this.url = options.url;
+    }
+})
 App.Gites = Backbone.Collection.extend({
     model: App.Location,
     url: App.Settings.urlLocations,
@@ -89,6 +97,35 @@ App.Gites = Backbone.Collection.extend({
 });
 
 // Views
+App.Form = Backbone.Form.extend({
+   initialize: function(options){
+       Backbone.Form.prototype.initialize.call(this, options);
+
+       this.model.on('change', this.reload, this);
+   },
+   events: {
+       'submit': 'submit'
+   },
+   submit: function(e){
+       e.preventDefault();
+       var errors = this.commit({ validate: true });
+
+       console.log(this.collection.toJSON());
+       //if(errors)
+       if(this.collection){
+            this.collection.create(this.model);
+       }
+       else
+           this.model.save();
+
+       console.log('submit');
+   },
+   reload: function(){
+       this.setValue(this.model.toJSON());
+   }
+
+});
+
 
 App.View = Backbone.View.extend({
    destroy: function(){
@@ -97,10 +134,11 @@ App.View = Backbone.View.extend({
        return this;
    }
 });
-
+// vista para el indicador de carga de ajax
 App.LoadingView = App.View.extend({
     initialize: function(){
-        this.el = $(App.container);
+        this.el = undefined != this.el  ? $(this.el) : $(App.container);
+        //this.message = options.message;
     },
     render: function(){
         console.log("Loading...");
@@ -119,7 +157,8 @@ App.LoadingView = App.View.extend({
 
         $("#img-load").css({
             top  : (this.el.height() / 2),
-            left : (this.el.width() / 2)
+            left : (this.el.width() / 2),
+            display: 'block'
         });
 
         $("#overlay").fadeIn();
@@ -127,7 +166,7 @@ App.LoadingView = App.View.extend({
     destroy: function(){
         console.log('Loaded!');
         $("#overlay").fadeOut().remove();
-        this.remove();
+        //this.remove();
     }
 });
 
@@ -189,18 +228,29 @@ App.SliderView = App.View.extend({
         }, this);
         var container = $('<div/>').addClass('container').append(
             '<div class="row animated fadeInDown">' +
-                '   <div class="span12">' +
-                '       <div id="myCarousel" class="carousel slide"></div>' +
-                '       <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>' +
-                '       <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>' +
-                '   </div>' +
-                '</div>'
+            '   <div class="span12">' +
+            '       <div id="myCarousel" class="carousel slide"></div>' +
+            '       <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>' +
+            '       <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>' +
+            '   </div>' +
+            '</div>'
         );
         this.el.append(container);
 
 
 
-        $('#myCarousel').append(row).carousel('cycle');
+        $('#myCarousel').append(row).carousel('cycle', { interval: 7500 });
+
+        $('#myCarousel').bind('slide', function(e) {
+            //new flux.slider('div.item.active .flux').stop();
+        });
+        $('#myCarousel').bind('slid', function(e) {
+            /*new flux.slider('div.item.active .flux', {
+                delay: 2500
+            }).start();
+            */
+        });
+
 
         return this;
     }
@@ -370,6 +420,112 @@ App.SidebarView = App.View.extend({
         return this;
     }
 });
+App.ReservationView = Backbone.View.extend({
+    initialize: function(){
+        _.bindAll(this);
+
+        this.el = $(this.el);
+
+        console.log(this.collection.toJSON());
+
+        this.collection.on('reset', this.addAll, this);
+        this.collection.on('add', this.addOne, this);
+        this.collection.on('change', this.change, this);
+        this.collection.on('destroy', this.destroy, this);
+        this.collection.on('request', function(e){
+            new App.LoadingView({ el: $(this.el) }).render();
+        }, this);
+        this.collection.on('sync', function(e){
+            new App.LoadingView({ el: $(this.el) }).destroy();
+        }, this);
+
+        this.collection.fetch();
+    },
+    render: function(){
+        this.el.fullCalendar({
+            header: {
+                left: 'title',
+                right: 'prev,next',
+                ignoreTimezone: false
+            },
+            selectable: true,
+            selectHelper: true,
+            select: this.select,
+            eventDataTransform: this._transform
+
+        });
+    },
+    _transform: function(event){
+        return {
+            id: event.id,
+            start: event.fecha_entrada,
+            end: event.fecha_salida,
+            title: 'Non disponible',
+            color: 'white',
+            backgroundColor: function() {
+                return event.get('email') == ( App.User.email != undefined ? App.User.email : '@')
+                    ? 'green' : '#0088CC';
+            }
+        }
+    },
+    destroy: function(event){
+        this.el.fullCalendar('removeEvents', event.id);
+    },
+    eventDropOrResize: function(fcEvent){
+
+    },
+    change: function(event){
+        var fcEvent = this.el.fullCalendar('clientEvents', event.get('id'))[0];
+        this.el.fullCalendar('updateEvent', fcEvent);
+    },
+    eventClick: function(fcEvent) {
+        //this.eventView.model = this.collection.get(fcEvent.id);
+        //this.eventView.render();
+    },
+    select: function(start, end){
+
+        //console.log(start, end);
+        var unavailable = false;
+        var self = this;
+
+        if(start <= Date.now() || end <= Date.now()){
+            this.el.fullCalendar('unselect');
+            return alert('debe escoger una fecha de hoy en adelante!');
+        }
+
+        _.each(this.collection.models, function(model){
+            model_start = $.fullCalendar.parseDate(model.get('fecha_entrada'));
+            model_end = $.fullCalendar.parseDate(model.get('fecha_salida'));
+
+            var overlap = Math.max(0, Math.min(model_end.getTime(), end.getTime()) - Math.max(model_start.getTime(), start.getTime()));
+
+
+            unavailable = unavailable || (overlap > 0);
+        });
+
+        if(unavailable){
+            alert('Imposible de selectioner ce rangue de dates parce il est sur le rangue d\'autres réserves ');
+            this.el.fullCalendar('unselect');
+        }else{
+            this.model.set({
+                fecha_entrada: $.fullCalendar.formatDate(start, 'yyyy-MM-dd hh:mm:ss'),
+                fecha_salida: $.fullCalendar.formatDate(end, 'yyyy-MM-dd hh:mm:ss')
+            });
+
+            console.log(this.model.toJSON());
+            //this.addOne(this.model);
+        }
+    },
+    addAll: function(){
+        console.log(this.collection.toJSON());
+        // agregando los eventos al calendario
+        this.el.fullCalendar('addEventSource', this.collection.toJSON());
+    },
+    addOne: function(event){
+        event.set({ backgroundColor: "#0088CC", color: "white"});
+        this.el.fullCalendar('renderEvent', event.toJSON(), true);
+    }
+});
 
 App.LocationsView = App.View.extend({
     initialize: function(){
@@ -427,71 +583,76 @@ App.LocationDetailView = Backbone.View.extend({
        this.el = $(this.el);
        this.model.on('change', this.render, this);
        this.model.on('reset', this.render, this);
-
        this.render();
    },
    render: function(){
-       var row = $('<div/>').addClass('span8');
-
-           row.append(
-               new App.ItemView({
-                   model: this.model,
-                   collection: this.collection,
-                   template_name: "#location-detail",
-                   tagName: 'div'
-               }).render().el
-           );
-
-       var sidebar = $('<div>').html(
-           '<div class="span3 sidebar offset1">' +
-               '<input type="text" class="input-large search-query" placeholder="Chercher">' +
-               '<h4 class="sidebar_header">Menu</h4>' +
-               '<ul class="sidebar_menu">' +
-               '   <li><a href="#">Suspendisse Semper Ipsum</a></li>' +
-               '   <li><a href="#">Maecenas Euismod Elit</a></li>' +
-               '   <li><a href="#">Suspendisse Semper Ipsum</a></li>' +
-               '   <li><a href="#">Maecenas Euismod Elit</a></li>' +
-               '   <li><a href="#">Suspendisse Semper Ipsum</a></li>' +
-               '</ul>' +
-               '<h4 class="sidebar_header">Recent posts</h4>' +
-               '    <ul class="recent_posts">' +
-               '        <li>' +
-               '           <div class="row">' +
-               '               <div class="span1">' +
-               '                   <a href="blog-post.html">' +
-               '                       <img class="thumb" alt="thumb post" src="img/pic_blog.png" />' +
-               '                   </a>' +
-               '               </div>' +
-               '                <div class="span2">' +
-               '                   <a class="link" href="blog-post.html">Suspendisse Semper Ipsum</a>' +
-               '                </div>' +
-               '            </div>' +
-               '        </li>'+
-               '</ul>' +
-               '  </div>'
+       var row = $('<div/>').addClass('span8').append(
+           new App.ItemView({
+               model: this.model,
+               template_name: '#location-detail'
+           }).render().el
        );
+
+       var reservacion = new App.Reservacion({
+           //title: 'Ma réservation',
+           fecha_entrada: '',
+           fecha_salida: '',
+           capacidad: 1
+       });
+
+       //this.model.reservaciones.add(reservacion);
+
+
 
        this.el.html("").append(
-           '<div id="blog_wrapper" class="blog_post">' +
-               '   <div class="container">' +
-               '       <div class="row">' +
-               '           <div class="span8">' +
-                                row.html() +
-               '           </div>' + sidebar.html()+
-               '       </div>' +
-               '   </div>' +
-               '</div>'
+           '    <div class="container" id="portfolio">' +
+           '         <h2 class="section_header left"><span>'+ this.model.get('nombre')+' </span><hr class="right visible-desktop"> </h2>' +
+           '        <div class="row-fluid">'+
+                  '    <ul class="nav nav-pills">' +
+                   '        <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon-calendar"></i> R&eacute;server</a></li>' +
+                   '        <li><a href="#tab2" data-toggle="tab"><i class="icon-info-sign"></i> Plus d\' info</a></li>' +
+                   '        <li><a href="#tab3" data-toggle="tab"><i class="icon-camera"></i> Photos</a></li>' +
+                   '    </ul>' +
+                   '    <div class="tab-content">' +
+                   '        <div class="tab-pane active" id="tab1">' +
+                   '            <div id="calendar" class="span7"></div>' +
+                   '            <div id="res-form" class="span4"></div> '+
+                   '        </div>' +
+                   '        <div class="tab-pane" id="tab2"></div>' +
+                   '        <div class="tab-pane" id="tab3"></div>' +
+                   '    </div>' +
+           '       </div>' +
+           '   </div>'
        );
 
-       $('#myCarousel').carousel('cycle');
+
+       new App.ItemView({
+           model: this.model,
+           template_name: '#location-detail',
+           el: $('#tab2')
+       }).render()
+
+       new App.ReservationView({
+           collection: this.model.reservaciones,
+           model: reservacion,
+           el: $('#calendar')
+       }).render();
+
+       $('#res-form').append(
+           new App.Form({
+               model: reservacion,
+               collection: this.model.reservaciones
+           }).render().el
+       );
+       //$('#myCarousel').carousel('cycle');
+
+       new App.ItemView({ template_name: '#portfolio', model: this.model, el: $('#tab3') }).render();
+
+       return this;
    }
 });
 
-App.ReservationView = App.View.extend({
-    initialize: function(){
-        _.bindAll(this);
-    }
-});
+
 
 /***************navbar *****************************/
 App.NavbarView = Backbone.View.extend({
@@ -518,9 +679,9 @@ App.NavbarView = Backbone.View.extend({
                 '           <div class="nav-collapse collapse">' +
                 '                <ul class="nav pull-right">' +
                 '                   <li><a href="#!/locations" class="scroller" data-section="#home">Locations</a></li>' +
-                '                   <li><a href="#!/contact" class="scroller" data-section="#footer">Contact</a></li>  ' +
-                '                   <li><a class="btn-header" href="#!/signup">Sign up</a></li>' +
-                '                   <li><a class="btn-header" href="#!/signin">Sign in</a></li>' +
+                '                   <li><a href="#!/contact" class="scroller" data-section="#footer">Nous</a></li>  ' +
+                '                   <li><a class="btn-header" href="#!/signup">S\' enregistrer</a></li>' +
+                '                   <li><a class="btn-header" href="#!/signin">Entrer</a></li>' +
                 '                </ul>' +
                 '             </div>' +
                 '        </div>' +
@@ -536,6 +697,8 @@ App.Router = Backbone.Router.extend({
 
     viewActive: null,
     routes: {
+        '': 'homeAction',
+        '/': 'homeAction',
         '!/home' : 'homeAction',
         '!/contact': 'contactAction',
         '!/location/:slug': 'locationAction',
@@ -552,9 +715,16 @@ App.Router = Backbone.Router.extend({
 
     reservarAction: function(slug){
         var model = App.getActiveCollection().findOneBySlug(slug);
-        this.clearView().viewActive = new App.ReservationView({
-              model: model,
-               el: $(App.container)
+        console.log(model);
+
+        var self = this;
+        model.fetch({
+            success: function(model, response, xhr){
+                self.clearView().viewActive = new App.ReservationView({
+                    collection: model.reservaciones,
+                    el: $(App.container)
+                }).render();
+            }
         });
     },
     homeAction: function(){
@@ -576,11 +746,18 @@ App.Router = Backbone.Router.extend({
     locationAction: function(slug){
 
         var model = App.getActiveCollection().findOneBySlug(slug);
+        var self = this;
+        model.fetch({
+            success: function(model, response, xhr){
+                console.log(model);
 
-        this.clearView().viewActive= new App.LocationDetailView({
-            model: model,
-            collection: App.getActiveCollection(),
-            el: $(App.container)
-        });
+                self.clearView().viewActive= new App.LocationDetailView({
+                    model: model,
+                    collection: App.getActiveCollection(),
+                    el: $(App.container)
+                });
+            }
+        })
+
     }
 });

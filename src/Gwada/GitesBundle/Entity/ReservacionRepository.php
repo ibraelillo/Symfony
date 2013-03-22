@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
 class ReservacionRepository extends EntityRepository
 {
 
-    public function findDisponible($location_id, $entrada, $salida)
+    public function findDisponible($location_id, $entrada = null, $salida = null)
     {
 
         /*$dql = "
@@ -43,11 +43,10 @@ class ReservacionRepository extends EntityRepository
             ->select('r')
             ->where('r.confirmada = true')
             ->andWhere('r.location = :location_id')
-            ->andWhere('(:entrada between r.fecha_entrada AND r.fecha_salida) OR (:salida between r.fecha_entrada and r.fecha_salida) ')
+            ->andWhere('(:entrada between r.fecha_entrada AND r.fecha_salida)  OR (r.fecha_entrada >=  :entrada)')
             ->setParameters(array(
                 'location_id' => $location_id,
-                'salida' => $salida,
-                'entrada' => $entrada
+                'entrada' => $entrada!= null ? $entrada : new \DateTime("today")
             ))->getQuery()->getResult();
     }
 

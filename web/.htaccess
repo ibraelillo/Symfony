@@ -1,9 +1,10 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    RewriteBase /
 
-    #<IfModule mod_vhost_alias.c>
-    #    RewriteBase /
-    #</IfModule>
+    RewriteCond %{HTTP_HOST} ^casasthomanon\.com [NC]
+    RewriteRule (.*) http://www.casasthomanon.com/$1 [L,R=301]
+
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ app.php [QSA,L]

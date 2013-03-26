@@ -2,20 +2,22 @@
 
 
 {% block stylesheets %}
-<!-- Bootstrap -->
-<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" id="bootstrap">
-<link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet" id="awesome">
+       {% stylesheets
+            'css/bootstrap.min.css'
+            'css/font-awesome.min.css'
+            'css/bootstrap-responsive.min.css'
+            'css/theme.css'
+            'css/blog.css'
+            'css/external-pages.css'
+            'css/fullcalendar.css'
+            'js/distribution/templates/bootstrap.css'
+            'css/signup.css'
+         output="css/minimized/app.min.css" %}
+        <link href="{{ asset('css/minimized/app.min.css') }}" rel="stylesheet" type="text/css" />
+        {% endstylesheets %}
     <!--[if IE 7]>
     <link rel="stylesheet" href="{{ asset('css/font-awesome-ie7.min.css') }}" />
     <![endif]-->
-    <!-- Le fav and touch icons -->
-<link href="{{ asset('css/bootstrap-responsive.min.css') }}" rel="stylesheet" id="responsive">
-<link rel="stylesheet" type="text/css" href="{{ asset('css/theme.css') }}" id="theme">
-<link rel="stylesheet" type="text/css" href="{{ asset('css/animate.css') }}" id="animate">
-<link rel="stylesheet" type="text/css" href="{{ asset('css/blog.css') }}" id="animate">
-<link rel="stylesheet" type="text/css" href="{{ asset('css/external-pages.css') }}" id="animate">
-<link rel="stylesheet" type="text/css" href="{{ asset('css/fullcalendar.css') }}" id="animate">
-<link href="{{ asset('js/distribution/templates/bootstrap.css') }}" rel="stylesheet" />
 <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
 <style>
     #content {
@@ -34,45 +36,13 @@
 
 
 {% block body %}
-
-
-    <div id="content">
-
-    </div>
-
-    <!-- starts testimonial -->
-    <div id="testimonials">
-        <div class="container">
-            <div class="controls">
-                <hr>
-            </div>
-            <div class="phrases_wrapper">
-                <div class="phrase">
-                    <div class="row">
-                        <div class="span7">
-                            <p class="testimony">
-                                There are many variations of passages words which don't look even slightly passage of anything embarrassing hidden in the middle.
-                                <span>"</span>
-                            </p>
-                        </div>
-                        <div class="span3 offset1">
-                            <div class="pic">
-                                <img src="img/pic1.jpg" alt="author" class="img-circle" />
-                                <span class="name">Alejandra Galvan Castillo</span>
-                                <span class="position">Bootstrap wizard</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="content"></div>
 
     <!-- starts footer -->
     <div id="footer">
         <div class="container">
             <div class="row">
-                <div class="span8">
+                <div class="span4">
                     <h3>L' equipe {{ entreprise|title }}</h3>
                     <div class="blog_post">
                         <div class="row">
@@ -81,7 +51,7 @@
                                     <img src="{{ asset('img/pic1.jpg') }}" alt="post image" class="img-circle" />
                                 </a>
                             </div>
-                            <div class="span4">
+                            <div class="span2">
                                 <a href="blog.html" class="title">
                                     Lorem Ipsum is simply dummy
                                 </a>
@@ -95,37 +65,29 @@
                         </div>
                     </div>
                 </div>
-                <div class="span4 contact_us">
-                    <h3>Contact Us</h3>
-                    <form class="form-horizontal">
-                        <div class="field">
-                            <div class="label_field">
-                                <label for="inputName">Name</label>
-                            </div>
-                            <input type="text" id="inputName" />
-                        </div>
+                <div class="span8 contact_us">
+                    <form>
+                        <div class="row">
+                            <div class="span3 field">
+                                <label class="label_field">Prenom</label>
+                                <input type="text" class="span3" placeholder="Prenoms">
+                                <label class="label_field">Nom</label>
+                                <input type="text" class="span3" placeholder="Nom de famille">
+                                <label class="label_field">Adresse Email</label>
+                                <input type="text" class="span3" placeholder="Votre adrese email">
+                                <label class="label_field">Suject</label>
+                                <input type="text" class="span3" placeholder="Sujet du message">
 
-                        <div class="field">
-                            <div class="label_field">
-                                <label for="inputEmail">Email</label>
                             </div>
-                            <input type="text" id="inputEmail" />
-                        </div>
+                            <div class="span5 field">
+                                <label class="label_field">Message</label>
+                                <textarea name="message" id="message" class="input-xlarge span5" rows="10"></textarea>
+                            </div>
 
-                        <div class="field">
-                            <div class="label_field">
-                                <label for="inputCity">City</label>
-                            </div>
-                            <input type="text" id="inputCity" />
+                            <button type="submit" class="btn pull-right">
+                                <i class="icon-comment"></i> Envoyer
+                            </button>
                         </div>
-
-                        <div class="field">
-                            <div class="label_field">
-                                <label for="inputComment">Comments</label>
-                            </div>
-                            <textarea name="comments"></textarea>
-                        </div>
-                        <button type="submit" class="btn">Send</button>
                     </form>
                 </div>
             </div>
@@ -156,7 +118,23 @@
 
 
 {% block javascripts %}
-    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
+    {% javascripts
+        'js/jquery.js'
+        'js/bootstrap.min.js'
+        'js/theme.js'
+        'js/json2.js'
+        'js/underscore.js'
+        'js/backbone.js'
+        'js/distribution/backbone-forms.js'
+        'js/distribution/templates/bootstrap.js'
+        'js/fullcalendar/fullcalendar.js'
+        'js/App.js'
+
+    output="js/minimized/app.min.js" %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+
+    <!--script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/theme.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/json2.js') }}"></script>
@@ -165,5 +143,6 @@
     <script type="text/javascript" src="{{ asset('js/distribution/backbone-forms.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/distribution/templates/bootstrap.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/fullcalendar/fullcalendar.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/App.js') }}"></script-->
 
 {% endblock %}

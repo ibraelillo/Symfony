@@ -1,0 +1,23 @@
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="paztek_home.always_true_csrf_provider" class="Application\Sonata\UserBundle\Form\Extension\Csrf\CsrfProvider\AlwaysTrueCsrfProvider">
+            <argument type="service" id="session" />
+            <argument>%kernel.secret%</argument>
+        </service>
+
+        <service id="application_sonata.ajax_authentication_success_handler" class="Application\Sonata\UserBundle\Security\Http\Authentication\AjaxAuthenticationHandler">
+            <call method="setSerializer">
+                <argument type="service" id="serializer" />
+            </call>
+        </service>
+
+        <service id="application_sonata.ajax_authentication_failure_handler" class="Application\Sonata\UserBundle\Security\Http\Authentication\AjaxAuthenticationHandler">
+        </service>
+
+        <service id="application_sonata.ajax_logout_success_handler" class="Application\Sonata\UserBundle\Security\Http\Authentication\AjaxAuthenticationHandler">
+        </service>
+    </services>
+</container>

@@ -39,8 +39,7 @@
         <label class="control-label" for="{{id}}">{{title}}</label>\
         <div class="controls">\
           {{editor}}\
-          <div class="help-inline">{{error}}</div>\
-          <span class="help-block">{{help}}</span>\
+          <span class="help-inline"><small>{{error}}</small></span>\
         </div>\
       </div>\
     ',

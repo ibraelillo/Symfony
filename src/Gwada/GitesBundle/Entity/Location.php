@@ -18,6 +18,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Entity(repositoryClass="Gwada\GitesBundle\Entity\LocationRepository")
  * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="location")
  */
 class Location
 {

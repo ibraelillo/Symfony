@@ -20,7 +20,7 @@ App.loading = function(el){
 };
 
 App.loaded = function(){
-    new App.LoadingView().destroy();
+    new App.LoadingView({}).destroy();
 };
 
 
@@ -28,7 +28,7 @@ App.init = function(){
 
     new App.NavbarView();
 
-    this.getActiveCollection().on('request', this.loading, this);
+    this.getActiveCollection().on('request', this.loading($(App.container)), this);
     this.getActiveCollection().on('sync', this.loaded, this);
 
 
@@ -45,12 +45,12 @@ App.Tarifa = Backbone.Model.extend();
 App.Gallery = Backbone.Model.extend();
 App.Reservacion = Backbone.Model.extend({
     schema: {
-        Titre:         { type: 'Select', options: ['Mr', 'Mrs', 'Ms'], help: 'Test de help' },
-        nombre:         'Text',
-        email:          { validators: ['required', 'email'] },
-        telefono:       'Text',
-        capacidad:      { type: 'Text'},
-        confirmada:     { type: 'Checkbox'}
+        title:          { type: 'Select', title: 'Titre', options: ['M.', 'Mdme'], validators:['required'] },
+        nombre:         { type: 'Text', title: 'Nom et prenom', validators:['required'] },
+        email:          { validators: ['required', 'email'], title: 'Adresse email' },
+        telefono:       { type: 'Text', title: 'Tel'},
+        capacidad:      { type: 'Text', title: 'Capacité', validators:['required']},
+        confirmada:     { type: 'Checkbox', title: 'Confirmé'}
 
     },
    urlRoot: function(){
@@ -129,16 +129,16 @@ App.Form = Backbone.Form.extend({
 
 App.View = Backbone.View.extend({
    destroy: function(){
-       this.$el.empty();
+       this.el.fadeOut().empty();
        this.stopListening();
        return this;
    }
 });
 // vista para el indicador de carga de ajax
 App.LoadingView = App.View.extend({
-    initialize: function(){
-        this.el = undefined != this.el  ? $(this.el) : $(App.container);
-        //this.message = options.message;
+    initialize: function(options){
+        this.el = (undefined != options.el  ? $(options.el) : $(App.container));
+        console.log(this.el);
     },
     render: function(){
         console.log("Loading...");
@@ -147,17 +147,18 @@ App.LoadingView = App.View.extend({
             '<img id="img-load" src="'+ App.Settings.ajax_loader +'" />'
         ).appendTo('body');
 
+        var self = this;
 
         $("#overlay").css({
             opacity : 0.5,
-            top     : this.el.offset().top,
-            width   : this.el.outerWidth(),
-            height  : this.el.outerHeight()
+            top     : self.el.offset().top,
+            width   : self.el.outerWidth(),
+            height  : self.el.outerHeight()
         });
 
         $("#img-load").css({
-            top  : (this.el.height() / 2),
-            left : (this.el.width() / 2),
+            top  : (self.el.height() / 2),
+            left : (self.el.width() / 2),
             display: 'block'
         });
 
@@ -175,7 +176,6 @@ App.LoadingView = App.View.extend({
 App.ItemView = Backbone.View.extend({
     'tagName': 'div',
     'className': '',
-    //template: _.template($('#location-features').html()),
     initialize: function() {
         _.bindAll(this);
 
@@ -227,11 +227,9 @@ App.SliderView = App.View.extend({
             i++;
         }, this);
         var container = $('<div/>').addClass('container').append(
-            '<div class="row animated fadeInDown">' +
+            '<div class="row-fluid animated fadeInDown">' +
             '   <div class="span12">' +
             '       <div id="myCarousel" class="carousel slide"></div>' +
-            '       <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>' +
-            '       <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>' +
             '   </div>' +
             '</div>'
         );
@@ -239,7 +237,10 @@ App.SliderView = App.View.extend({
 
 
 
-        $('#myCarousel').append(row).carousel('cycle', { interval: 7500 });
+        $('#myCarousel').append(row).append('       ' +
+            '<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>' +
+            '<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>')
+            .carousel('cycle', { interval: 7500 });
 
         $('#myCarousel').bind('slide', function(e) {
             //new flux.slider('div.item.active .flux').stop();
@@ -426,17 +427,19 @@ App.ReservationView = Backbone.View.extend({
 
         this.el = $(this.el);
 
-        console.log(this.collection.toJSON());
+        //console.log(this.collection.toJSON());
+
+        var self = this;
 
         this.collection.on('reset', this.addAll, this);
         this.collection.on('add', this.addOne, this);
         this.collection.on('change', this.change, this);
         this.collection.on('destroy', this.destroy, this);
-        this.collection.on('request', function(e){
-            new App.LoadingView({ el: $(this.el) }).render();
+        this.collection.on('request', function(){
+            App.loading(self.el);
         }, this);
-        this.collection.on('sync', function(e){
-            new App.LoadingView({ el: $(this.el) }).destroy();
+        this.collection.on('sync', function(){
+            App.loaded( self.el);
         }, this);
 
         this.collection.fetch();
@@ -539,6 +542,16 @@ App.LocationsView = App.View.extend({
 
         this.render();
     },
+    events: {
+       'click a': function(e){
+           var link = $(e.target);
+           var clase = link.attr('class');
+
+           if(clase){
+               $('a.btn.'+clase).button('loading');
+           }
+       }
+    },
     render: function(){
         var row = $('<div/>').addClass('span8');
 
@@ -605,24 +618,39 @@ App.LocationDetailView = Backbone.View.extend({
 
 
        this.el.html("").append(
-           '    <div class="container" id="portfolio">' +
-           '         <h2 class="section_header left"><span>'+ this.model.get('nombre')+' </span><hr class="right visible-desktop"> </h2>' +
-           '        <div class="row-fluid">'+
-                  '    <ul class="nav nav-pills">' +
-                   '        <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon-calendar"></i> R&eacute;server</a></li>' +
-                   '        <li><a href="#tab2" data-toggle="tab"><i class="icon-info-sign"></i> Plus d\' info</a></li>' +
-                   '        <li><a href="#tab3" data-toggle="tab"><i class="icon-camera"></i> Photos</a></li>' +
-                   '    </ul>' +
-                   '    <div class="tab-content">' +
-                   '        <div class="tab-pane active" id="tab1">' +
-                   '            <div id="calendar" class="span7"></div>' +
-                   '            <div id="res-form" class="span4"></div> '+
-                   '        </div>' +
-                   '        <div class="tab-pane" id="tab2"></div>' +
-                   '        <div class="tab-pane" id="tab3"></div>' +
-                   '    </div>' +
-           '       </div>' +
-           '   </div>'
+           '    <div class="container" id="portfolio">\
+                    <h2 class="section_header left"><span>'+ this.model.get('nombre')+' </span><hr class="right visible-desktop"> </h2>\
+                   <div class="row-fluid tabbable">\
+                    <div class="navbar">\
+                        <div class="navbar-inner"> \
+                            <div class="container-fluid"> \
+                                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">\
+                                   <span class="icon-bar"></span>\
+                                   <span class="icon-bar"></span>\
+                                   <span class="icon-bar"></span>\
+                               </a>\
+                               <div class="nav-collapse"> \
+                                   <ul class="nav nav-pills">\
+                                       <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon-calendar"></i> R&eacute;server</a></li>\
+                                       <li><a href="#tab2" data-toggle="tab"><i class="icon-info-sign"></i> Plus d\' info</a></li>\
+                                       <li><a href="#tab3" data-toggle="tab"><i class="icon-camera"></i> Photos <span class="badge badge-success">'+ this.model.get('gallery').length +'</span> </a></li>\
+                                       <li><a href="#tab4" data-toggle="tab"><i class="icon-facetime-video"></i> Videos <span class="badge badge-success">'+ 0 +'</span> </a></li>\
+                                   </ul>\
+                               </div>\
+                            </div>\
+                       </div>\
+                    </div>\
+                       <div class="tab-content">\
+                           <div class="tab-pane active" id="tab1">\
+                               <div id="calendar" class="span7"></div>\
+                               <div id="res-form" class="span4"></div> \
+                           </div>\
+                            <div class="tab-pane" id="tab2"></div>\
+                           <div class="tab-pane" id="tab3"></div>\
+                           <div class="tab-pane" id="tab4"></div>\
+                       </div>\
+                  </div>\
+              </div>'
        );
 
 
@@ -678,10 +706,24 @@ App.NavbarView = Backbone.View.extend({
                 '           </a>' +
                 '           <div class="nav-collapse collapse">' +
                 '                <ul class="nav pull-right">' +
-                '                   <li><a href="#!/locations" class="scroller" data-section="#home">Locations</a></li>' +
-                '                   <li><a href="#!/contact" class="scroller" data-section="#footer">Nous</a></li>  ' +
-                '                   <li><a class="btn-header" href="#!/signup">S\' enregistrer</a></li>' +
-                '                   <li><a class="btn-header" href="#!/signin">Entrer</a></li>' +
+                '                   <li><a href="#!/locations" class="scroller" data-section="#home"><i class="icon-home"></i> Locations</a></li>' +
+                '                   <li><a href="#!/contact" class="scroller" data-section="#footer"><i class="icon-envelope"></i> Contact</a></li>  ' +
+                '                   <li><a href="#!/signup"><i class="icon-group"></i> Devenir client</a></li>' +
+                '                   <li class="dropdown">'+
+                                        '<a class="dropdown-toggle" href="#" data-toggle="dropdown">Entrer <strong class="caret"></strong></a>\
+                                        <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">\
+                                            <form method="post" action="#!/login" accept-charset="UTF-8">\
+                                                <input style="margin-bottom: 15px;" type="text" placeholder="Username" id="username" name="username">\
+                                                <input style="margin-bottom: 15px;" type="password" placeholder="Mot de passe" id="password" name="password">\
+                                                <input style="float: left; margin-right: 10px;" type="checkbox" name="remember-me" id="remember-me" value="1">\
+                                                <label class="string optional" for="user_remember_me">Me souvenir</label>\
+                                                <button class="btn btn-primary btn-block" type="submit" id="sign-in"> <i class="icon-signin"></i> Entrer</button>\
+                                                <label style="text-align:center;margin-top:5px">ou</label>\
+                                                <button class="btn btn-primary btn-block" type="button" id="sign-in-google"><i class="icon-google-plus"></i> Sign In with Google</button>\
+                                                <button class="btn btn-primary btn-block" type="button" id="sign-in-twitter"><i class="icon-facebook-sign"></i> Sign In with Facebook</button>\
+                                            </form>\
+                                        </div>\
+                                    </li>' +
                 '                </ul>' +
                 '             </div>' +
                 '        </div>' +
@@ -690,8 +732,40 @@ App.NavbarView = Backbone.View.extend({
         );
     }
 });
+App.Signup = App.View.extend({
+    template: _.template($("#signup").html()),
+    initialize: function(){
+        _.bindAll(this);
 
+        this.form = App.Form.extend({
+            schema: {
+                email:          { type: 'Text', validators: ['email'], required: true},
+                password:       { type: 'Password', required: true },
+                confirmation:   { type: 'Password', required: true },
+                permite_email:  { type: 'Checkbox'}
+            }
+        });
+        this.el = $(this.el);
+    },
+   render: function(){
+       this.el.html(this.template());
 
+       return this;
+   }
+});
+App.ContactView = App.View.extend({
+    //template: _.template($("#signup").html()),
+    initialize: function(){
+        _.bindAll(this);
+
+       this.el = $(this.el);
+    },
+    render: function(){
+        this.el.load(App.pages.contact);
+
+        return this;
+    }
+});
 
 App.Router = Backbone.Router.extend({
 
@@ -703,19 +777,26 @@ App.Router = Backbone.Router.extend({
         '!/contact': 'contactAction',
         '!/location/:slug': 'locationAction',
         '!/location/:slug/reservar': 'reservarAction',
-        '!/locations' : 'allAction'
+        '!/locations' : 'allAction',
+        '!/signup': 'signup'
     },
 
     clearView: function(){
         if(this.viewActive instanceof App.View)
-            this.viewActive.destroy();
+            this.viewActive.destroy().el.hide();
 
         return this;
     },
 
+    signup: function(){
+        this.clearView().viewActive = new App.Signup({
+            el: $(App.container)
+        }).render().el.fadeIn();
+    },
+
     reservarAction: function(slug){
         var model = App.getActiveCollection().findOneBySlug(slug);
-        console.log(model);
+        //console.log(model);
 
         var self = this;
         model.fetch({
@@ -723,24 +804,28 @@ App.Router = Backbone.Router.extend({
                 self.clearView().viewActive = new App.ReservationView({
                     collection: model.reservaciones,
                     el: $(App.container)
-                }).render();
+                }).render().el.fadeIn('slow');
             }
         });
     },
     homeAction: function(){
+        $('document').attr('title', "Accueil | " + App.title);
         this.clearView().viewActive = new App.PortadaView({
             collection: App.collection,
-            el: $(App.container)});
+            el: $(App.container)
+        }).el.fadeIn('slow');
     },
     contactAction: function(){
-        alert('contact');
+        this.clearView().viewActive = new App.ContactView({
+            el: $(App.container)
+        }).render();
     },
 
     allAction: function(){
         this.clearView().viewActive= new App.LocationsView({
             el: $('#content'),
             collection: App.getActiveCollection()
-        });
+        }).el.fadeIn('slow');
     },
 
     locationAction: function(slug){
@@ -755,7 +840,7 @@ App.Router = Backbone.Router.extend({
                     model: model,
                     collection: App.getActiveCollection(),
                     el: $(App.container)
-                });
+                }).el.fadeIn('slow');
             }
         })
 

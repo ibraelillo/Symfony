@@ -1,7 +1,4 @@
-{% extends "::frontend.html.twig" %}
 
-
-{% block content %}
     <div id="contact" class="contact_page">
         <div class="container">
             <!-- header -->
@@ -14,10 +11,12 @@
             <div class="row map">
                 <div class="span12">
                     <div class="gmaps">
-                        <iframe style="width: 100%; height: 100%; border: none;" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Silicon+Valley,+United+States&amp;aq=1&amp;oq=sillicon+valley&amp;sll=31.428663,-100.085449&amp;sspn=5.642034,9.876709&amp;ie=UTF8&amp;hq=&amp;hnear=Silicon+Valley&amp;ll=37.372517,-122.03476&amp;spn=0.020534,0.038581&amp;t=m&amp;z=14&amp;output=embed"></iframe>
+                        <iframe style="width: 100%; height: 100%; border: none;" src="https://maps.google.com/maps?ll=16.286693,-61.291351&spn=0.058412,0.099049&t=m&z=14&lci=com.panoramio.all&output=embed"></iframe>
                     </div>
                     <h3>
-                        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
+                        Casas Thomanon est une entreprise d&eacute;di&eacute;e à la location de gites et villa touristiques à Saint François, Guadeloupe.
+                        Implantée depuis 2006, nous r&eacute;pondons à vos attentes pour rendre vos vacances le plus agr&eacute;able possible.
+
                     </h3>
                 </div>
             </div>
@@ -26,56 +25,56 @@
                 <div class="span6">
                     <form class="form-horizontal">
                         <div class="control-group">
-                            <label class="control-label" for="inputName">Name</label>
+                            <label class="control-label" for="inputName">Nom</label>
                             <div class="controls">
                                 <input type="text" class="span4" id="inputName">
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" for="inputEmail">Email</label>
+                            <label class="control-label" for="inputEmail">Adresse email</label>
                             <div class="controls">
                                 <input type="text" class="span4" id="inputEmail">
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" for="inputPhone">Phone</label>
+                            <label class="control-label" for="inputPhone">Télèphone</label>
                             <div class="controls">
                                 <input type="text" class="span4" id="inputPhone">
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" for="inputCity">City</label>
+                            <label class="control-label" for="inputCity">Ville</label>
                             <div class="controls">
                                 <input type="text" class="span4" id="inputCity">
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" for="inputComment">Comment</label>
+                            <label class="control-label" for="inputComment">Commentaire</label>
                             <div class="controls">
                                 <textarea class="span4" id="inputComment" rows="6"></textarea>
                             </div>
                         </div>
                         <div class="control-group">
                             <div class="controls action">
-                                <button type="submit" class="btn">Send</button>
+                                <button type="submit" class="btn">Envoyer</button>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="span5 offset1">
                     <div class="address">
-                        <h3>Address</h3>
+                        <h3>Adresse</h3>
                         <p>
-                            2301 East Lamar Blvd. Suite 199. Arlington.
-                            <br> Unites States, Zip Code, TX 65730.
+                            Dubedou, Saint François 97118
+                            <br> Guadeloupe
                         </p>
                         <div class="info">
                             <i class="contact phone"></i>
-                            1 817 274 2933
+                            <a href="callto://+33605222333">+33 (0) 605 222 333</a>
                         </div>
                         <div class="info">
                             <i class="contact email"></i>
-                            bootstrap@twitter.com
+                            <a href="mailto:sci@casasthomanon.com">sci@casasthomanon.com</a>
                         </div>
                         <hr>
                         <h3>Social media</h3>
@@ -102,6 +101,3 @@
 
         </div>
     </div>
-
-
-{% endblock %}

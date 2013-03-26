@@ -168,3 +168,4 @@ vendor/
 projectFilesBackup
 .idea
 web/img/fixtures/
+web/uploads

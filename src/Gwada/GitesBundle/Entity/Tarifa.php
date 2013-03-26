@@ -12,6 +12,7 @@ use Gwada\GitesBundle\Entity\Location;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="tarifa")
  */
 class Tarifa
 {

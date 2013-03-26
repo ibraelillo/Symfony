@@ -40,7 +40,7 @@ class MediaFixtures extends AbstractFixture implements OrderedFixtureInterface, 
             $gallery->setDefaultFormat('default_big');
             $gallery->setEnabled(true);
 
-            $directorio= $this->container->getParameter('kernel.root_dir')."/../web/img/fixtures/".$loc->getSlug();
+            $directorio= $this->container->getParameter('kernel.root_dir')."/../web/img/fixtures/".strtolower($loc->getNombre());
 
             $fotos  = scandir($directorio);
 

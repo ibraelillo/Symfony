@@ -57,7 +57,7 @@ class LocationFixtures extends \Doctrine\Common\DataFixtures\AbstractFixture imp
                 )
             ),
             array(
-                'nombre' => "Petit Bungalow", 'capacidad' => 5, 'precio_base'=> 700,
+                'nombre' => "Bungalow Vert", 'capacidad' => 5, 'precio_base'=> 700,
                 'descripcion'=> array(
                     "Chambre climatisée avec lit double télévision et coffre fort",
                     "Mezzanine avec lit double et un couchage enfant (accés echelle meunier)",
@@ -72,7 +72,7 @@ class LocationFixtures extends \Doctrine\Common\DataFixtures\AbstractFixture imp
                 )
             ),
             array(
-                'nombre' => "Grand Studio", 'capacidad' => 4, 'precio_base'=> 450,
+                'nombre' => "Studio Jaune", 'capacidad' => 4, 'precio_base'=> 450,
                 'descripcion'=> array(
                     "Gite studio climatisé comprenant un lit double, télévision, armoire penderie, etc..",
                     "Coin cuisine avec kitchenette (frigo top, microonde, plaque gaz, évier, plan de travail, rangement, etc..",
@@ -85,7 +85,7 @@ class LocationFixtures extends \Doctrine\Common\DataFixtures\AbstractFixture imp
                 )
             ),
             array(
-                'nombre' => "Petit Studio", 'capacidad' => 2, 'precio_base'=> 350,
+                'nombre' => "Studio Bleu", 'capacidad' => 2, 'precio_base'=> 350,
                 'descripcion'=> array(
                     "Gite type 1 avec chambre climatisée, lit double, rangement penderie, télévision..",
                     "Salle de bain compléte (lavabo douche wc)",

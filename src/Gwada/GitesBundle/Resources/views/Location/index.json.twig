@@ -2,6 +2,7 @@
 
 [{% for e in entities %}
     {
+
         "nombre": "{{ e.nombre|title }}",
         "url":  "{{ path('location_show', { 'id': e.id }) }}",
         "capacidad": {{ e.capacidad }},

@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gwada\GitesBundle\Entity\Location;
 /**
  * @ORM\Entity(repositoryClass="Gwada\GitesBundle\Entity\ReservacionRepository")
+ * @ORM\Table(name="reservacion")
  */
 class Reservacion
 {

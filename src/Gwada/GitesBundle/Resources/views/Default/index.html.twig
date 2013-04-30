@@ -1,39 +1,116 @@
 {% extends "::frontend.html.twig" %}
+{% trans_default_domain 'GitesBundle' %}
 
-{% block title %}Gites à Guadeloupe{% endblock %}
+{% block title %}Gites à Guadeloupe - Locations et Prix{% endblock %}
 
 {% block templates %}
-<script type="text/template" id="signup">
-    <div id="box_sign">
-        <div class="container">
-            <div class="span12 box_wrapper">
-                <div class="span12 box">
-                    <div>
-                        <div class="head">
-                            <h4>Creer votre compte</h4>
-                        </div>
-                        <div class="form">
-                            <form>
-                                <input type="text" placeholder="Email">
-                                <input type="password" placeholder="Mot de passe">
-                                <input type="password" placeholder="Confirmation">
-                                <button type="submit" class="btn">
-                                    <i class="icon-ok"></i> Enregistrer
-                                </button>
-                            </form>
-                        </div>
+
+    <script type="text/template" id="navbar">
+        <a href="#" class="scrolltop"><span><i class="icon-arrow-up"></i></span></a>
+
+        <div class="navbar navbar-fixed-top" id="barra">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand scroller" data-section="body" href="#!/home">
+                        <img src="<%=logo%>" alt="logo"/>
+                    </a>
+
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right">
+                            <li><a href="#!/locations" class="scroller" data-section="#home"><i class="icon-home"></i>
+                                    Locations</a></li>
+                            <li><a href="#!/contact" class="scroller" data-section="#footer"><i
+                                            class="icon-envelope"></i> {{ 'contact'|trans }}</a></li>
+                            <li><a href="#!/signup"><i class="icon-group"></i> {{ 'signup'|trans }}</a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" href="#" data-toggle="dropdown">{{ 'entrer'|trans|title }}
+                                    <strong class="caret"></strong></a>
+
+                                <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+                                    <form method="post" action="#!/login" accept-charset="UTF-8">
+                                        <input style="margin-bottom: 15px;" type="text"
+                                               placeholder="{{ 'username'|trans|title }}" id="username" name="username">
+                                        <input style="margin-bottom: 15px;" type="password"
+                                               placeholder="{{ 'password'|trans|title }}" id="password" name="password">
+                                        <input style="float: left; margin-right: 10px;" type="checkbox"
+                                               name="remember-me" id="remember-me" value="1">
+                                        <label class="string optional"
+                                               for="user_remember_me">{{ 'remember_me'|trans }}</label>
+                                        <button class="btn btn-primary btn-block" type="submit" id="sign-in"><i
+                                                    class="icon-signin"></i> {{ 'sign_in'|trans|title }}</button>
+                                        <label style="text-align:center;margin-top:5px">{{ 'or'|trans }}</label>
+                                        <button class="btn btn-primary btn-block" type="button" id="sign-in-google"><i
+                                                    class="icon-google-plus"></i> {{ 'sign_in_with'|trans|title }} Google
+                                        </button>
+                                        <button class="btn btn-primary btn-block" type="button" id="sign-in-twitter"><i
+                                                    class="icon-facebook-sign"></i> {{ 'sign_in_with'|trans|title }} Facebook
+                                        </button>
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                <p class="already">Avez vous d&eacute;jà une compte?
-                    <a href="#!/signin">Entrer comme client</a></p>
             </div>
         </div>
-    </div>
-</script>
+    </script>
+
+    <script type="text/template" id="about-us">
+        <div class="container about_page">
+            <h2 class="section_header">
+                <hr class="left visible-desktop">
+                <span>{{ 'about.us'|trans }}</span>
+                <hr class="right visible-desktop">
+            </h2>
+
+            <div class="row">
+                <div class="span12">
+                    <h3 class="intro">
+                        {{ 'entreprise.description'|trans }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </script>
 
 
-<script type="text/template" id="portfolio">
-    <% var i, j=0; for(i = 4; i <= gallery.length+3; i+=4){ %>
+    <script type="text/template" id="signup">
+        <div id="box_sign">
+            <div class="container">
+                <div class="span12 box_wrapper">
+                    <div class="span12 box">
+                        <div>
+                            <div class="head">
+                                <h4>{{ 'create.your.account'|trans }}</h4>
+                            </div>
+                            <div class="form">
+                                <form>
+                                    <input type="text" placeholder="Email">
+                                    <input type="password" placeholder="Mot de passe">
+                                    <input type="password" placeholder="Confirmation">
+                                    <button type="submit" class="btn">
+                                        <i class="icon-ok"></i> {{ 'save'|trans }}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="already">{{ 'already.have.account'|trans }}
+                        <a href="#!/signin">{{ 'signin.as.client'|trans }}</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </script>
+
+
+    <script type="text/template" id="portfolio">
+        <% var i, j=0; for(i = 4; i <= gallery.length+3; i+=4){ %>
         <% var fotos = gallery.slice(j, Math.min(i,gallery.length)) %>
         <div class="row-fluid">
             <ul class="thumbnails">
@@ -51,158 +128,214 @@
                 <% }); %>
             </ul>
         </div>
-    <% j = i; } %>
-</script>
+        <% j = i; } %>
+    </script>
 
-<script type="text/template" id="location-detail">
-    <div class="row-fluid" >
-        <div class="span3 well">
-            <div class="section">
-                <h4>
-                    <span>Prix</span>
-                    <hr class="right visible-desktop">
-                </h4>
-                <ul class="nav nav-list nav-stacked">
-                    <li class="price"><i class="icon-money"></i> <strong><%=precio%> &euro;</strong> par semaine</li>
-                    <li><i class="icon-bar-chart"></i> Offres regresives</li>
-                </ul>
-                <h4>
-                    <span>Contacter</span>
-                    <hr class="right visible-desktop">
-                </h4>
-                <ul class="nav nav-stacked nav-list">
-                    <li><i class="icon-phone"></i> +33 (0) 605 222 333</li>
-                    <li><i class="icon-envelope-alt"></i> reserve@casasthomanon.com</li>
-                </ul>
-                <h4>
-                    <span>Services</span>
-                    <hr class="right visible-desktop">
-                </h4>
-                <ul class="nav nav-list nav-stacked">
-                    <% if(cocina) { %><li><i class="icon-food"></i>Cuisine</li><% } %>
-                    <li><i class="icon-signal"></i>Internet / Wifi</li>
-                    <li><i class="icon-group"></i> 9 personnes </li>
-                </ul>
-                <h4>
-                    <span>Paiment</span>
-                    <hr class="right visible-desktop">
-                </h4>
-                <ul class="nav nav-list nav-stacked">
-                    <li><i class="icon-credit-card"></i> Carte blue</li>
-                    <li><i class="icon-file"></i> Check vacances </li>
-                </ul>
+    <script type="text/template" id="location-detail">
+        <div class="row-fluid">
+            <div class="span3 well">
+                <div class="section">
+                    <h4>
+                        <span>{{ 'price'|trans }}</span>
+                        <hr class="right visible-desktop">
+                    </h4>
+                    <ul class="nav nav-list nav-stacked">
+                        <li class="price"><i class="icon-money"></i>
+                            <strong><%=precio%> &euro;</strong> {{ 'for.week'|trans }}</li>
+                        <li><i class="icon-bar-chart"></i> {{ 'regresives.offerts'|trans }}</li>
+                    </ul>
+                    <h4>
+                        <span>{{ 'contacter'|trans }}</span>
+                        <hr class="right visible-desktop">
+                    </h4>
+                    <ul class="nav nav-stacked nav-list">
+                        <li><i class="icon-phone"></i><a href="callto://+33605222333">+33 (0) 605 222 333</a></li>
+                        <li><i class="icon-envelope-alt"></i><a href="mailto:reserve@casasthomanon.com">reserve@casasthomanon.com</a>
+                        </li>
+                    </ul>
+                    <h4>
+                        <span>{{ 'services'|trans|title }}</span>
+                        <hr class="right visible-desktop">
+                    </h4>
+                    <ul class="nav nav-list nav-stacked">
+                        <% if(cocina) { %>
+                        <li><i class="icon-food"></i>{{ 'cuisine'|trans }}</li>
+                        <% } %>
+                        <li><i class="icon-signal"></i>{{ 'wifi'|trans }}</li>
+                        <li><i class="icon-group"></i> 9 {{ 'people'|trans }}</li>
+                    </ul>
+                    <h4>
+                        <span>{{ 'payment'|trans }}</span>
+                        <hr class="right visible-desktop">
+                    </h4>
+                    <ul class="nav nav-list nav-stacked">
+                        <li><i class="icon-credit-card"></i> Carte blue</li>
+                        <li><i class="icon-file"></i> Check vacances</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="span9">
+                <section id="description">
+                    <h4 class="section_header">
+                        <hr class="left visible-desktop">
+                        <span>{{ 'info.basic'|trans }}</span>
+                        <small>
+                            <address><i class="icon-map-marker"></i> <%=direccion%></address>
+                        </small>
+                        <hr class="right visible-desktop">
+                    </h4>
+                    <div class="post_content"><p>
+                            <% var lignes = descripcion.trim('"').split('.'), i =0; %>
+                        <ul class="unstyled">
+                            <% for(i =0; i< lignes.length; i++) { %>
+                            <li><i class="icon-ok"></i> <%=lignes[i]%>.</li>
+                            <% } %>
+                        </ul>
+                        </p></div>
+                </section>
+                <section id="comments">
+                    <h4 class="section_header">
+                        <hr class="left visible-desktop">
+                        <span>{{ 'comments'|trans }}</span>
+                        <hr class="right visible-desktop">
+                    </h4>
+
+                </section>
+
             </div>
         </div>
-        <div class="span9">
-            <section id="description">
-                <h4 class="section_header">
-                    <hr class="left visible-desktop">
-                    <span>Information basique</span>
-                    <small><address><i class="icon-map-marker"></i> <%=direccion%></address></small>
-                    <hr class="right visible-desktop">
-                </h4>
-                <div class="post_content"><p>
-                        <% var lignes = descripcion.trim('"').split('.'), i =0; %>
-                        <ul class="unstyled">
-                        <% for(i =0; i< lignes.length; i++) { %><li><i class="icon-ok"></i> <%=lignes[i]%>.</li><% } %>
-                        </ul>
-                    </p></div>
-            </section>
-            <section id="comments">
-                <h4 class="section_header">
-                    <hr class="left visible-desktop">
-                    <span>Commentaires</span>
-                    <hr class="right visible-desktop">
-                </h4>
 
-            </section>
+    </script>
 
-        </div>
-    </div>
-
-</script>
-
-<script type="text/template" id="location-preview">
+    <script type="text/template" id="location-preview">
         <div class="row" id="loc<%=slug%>">
             <div class="span3">
                 <a href="#!/location/<%=slug%>" class="loc<%=nombre%>">
-                    <img class="main_pic" alt="main pic" src="<%=portada%>" />
+                    <img class="main_pic" alt="main pic" src="<%=portada%>"/>
                 </a>
             </div>
             <div class="span4 info">
                 <h3><a href="#!/location/<%=slug%>">
-                    <i class="icon-home"></i> <%=nombre%></a>
+                        <i class="icon-home"></i> <%=nombre%></a>
                 </h3>
+
                 <p><%=truncate(descripcion, 200, true) %></p>
+
                 <div class="post_info">
                     <div class="author">
-                        <span rel="tooltip" title="Maximum <%=capacidad%> personnes"><b class="icon-group"></b> <%=capacidad%> personnes</span>
+                        <span rel="tooltip"
+                              title="{{ 'Maximum'|trans }} <%=capacidad%> {{ 'people' }}"><b
+                                    class="icon-group"></b> <%=capacidad%> {{ 'people'|trans }}</span>
                     </div>
                 </div>
             </div>
         </div>
-        <a href="#!/location/<%=slug%>" class="btn loc<%=slug%>" data-loading-text="Loading..."><i class="icon-plus"></i> Plus d' info</a>
-</script>
-<script type="text/template" id="location-slide">
-       <div class="row">
+        <a href="#!/location/<%=slug%>" class="btn loc<%=slug%>" data-loading-text="Loading..."><i
+                    class="icon-plus"></i> {{ 'more.info'|trans }}</a>
+    </script>
+    <script type="text/template" id="location-slide">
+        <div class="row">
             <div class="span6 <% if(precio > 400 && precio < 600 ){ %>animated fadeInDownBig<% } else { %>animated fadeInUpBig<% } %>">
-                <a href="#!/location/<%=slug%>" title="<%=nombre%>"><img class="img-polaroid" src="<%=portada%>" alt="<%=nombre%>" /></a>
+                <a href="#!/location/<%=slug%>" title="<%=nombre%>"><img class="img-polaroid" src="<%=portada%>"
+                                                                         alt="<%=nombre%>"/></a>
             </div>
             <div class="span4 <% if(precio > 400 && precio < 600 ){ %>animated fadeInUpBig<% } else { %>animated fadeInDownBig<% } %>">
                 <h1><a href="#!/location/<%=slug%>"> <%=nombre%></a></h1>
+
                 <p><%=truncate(descripcion, 200, true)%></p>
                 <a href="#!/location/<%=slug%>" class="btn btn-success btn-large">
-                    <i class="icon-calendar"></i> Réserver!</a>
+                    <i class="icon-calendar"></i> {{ 'reserve'|trans }}!</a>
             </div>
         </div>
-</script>
-<script type="text/template" id="location-features">
-    <a href="#!/location/<%=slug%>"><img src="<%=portada%>" alt="<%=nombre%>" class="thumb" width="80%" /></a>
-    <h3><i class="icon-home"></i> <%=nombre%></h3>
-    <p class="description"><%=truncate(descripcion, 200, true)%></p>
-    <a href="#!/location/<%=slug%>" class="btn btn-default"><i class="icon-plus"></i> Plus...</a>
-</script>
-<script type="text/template" id="location-pricing">
-    <div class="price_wrapper <%=clasif %> <% if (clasif != 'pro') { %>regular <% } %>">
-        <div class="header">
-            <span><%=nombre%></span>
-            <div class="price">
-                <span><%=precio%> &euro;</span>
-                Par semaine
-            </div>
-        </div>
-        <div class="section">
-            <h3>Services</h3>
-            <ul class="perks">
-                <% if(cocina) { %><li><i class="icon-food"></i>Cuisine</li><% } %>
-                <li><i class="icon-signal"></i>Internet / Wifi</li>
-                <li>
-                    <i class="i_loading"></i>
-                    Fast-loading
-                </li>
-            </ul>
-            <a href="#!/location/<%=slug%>" class="btn"><i class="icon-calendar"></i> R&eacute;server</a>
-        </div>
-    </div>
-</script>
+    </script>
+    <script type="text/template" id="location-features">
+        <a href="#!/location/<%=slug%>"><img src="<%=portada%>" alt="<%=nombre%>" class="thumb" width="80%"/></a>
 
+        <h3><i class="icon-home"></i> <%=nombre%></h3>
+
+        <p class="description"><%=truncate(descripcion, 200, true)%></p>
+        <a href="#!/location/<%=slug%>" class="btn btn-default"><i
+                    class="icon-plus"></i> {{ 'more.info'|trans }}...</a>
+    </script>
+    <script type="text/template" id="location-pricing">
+        <div class="price_wrapper <%=clasif %> <% if (clasif != 'pro') { %>regular <% } %>">
+            <div class="header">
+                <span><%=nombre%></span>
+
+                <div class="price">
+                    <span><%=precio%> &euro;</span>
+                    {{ 'for.week'|trans }}
+                </div>
+            </div>
+            <div class="section">
+                <h3>Services</h3>
+                <ul class="perks">
+                    <% if(cocina) { %>
+                    <li><i class="icon-food"></i>Cuisine</li>
+                    <% } %>
+                    <li><i class="icon-signal"></i>Internet / Wifi</li>
+                </ul>
+                <a href="#!/location/<%=slug%>" class="btn"><i
+                            class="icon-calendar"></i>{{ 'reserve'|trans }}</a>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/template" id="reservation-navtabs">
+        <div class="container" id="portfolio">
+            <h2 class="section_header left">
+                <span><%=nombre %></span>
+                <hr class="right visible-desktop">
+            </h2>
+            <div class="row-fluid tabbable">
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <div class="container-fluid">
+                            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </a>
+                            <div class="nav-collapse">
+                                <ul class="nav nav-pills">
+                                    <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon-calendar"></i> {{ 'reserve'|trans }}</a></li>
+                                    <li><a href="#tab2" data-toggle="tab"><i class="icon-info-sign"></i> {{ 'more.info'|trans }}</a></li>
+                                    <li><a href="#tab3" data-toggle="tab"><i class="icon-camera"></i> {{ 'photos'|trans }} <span class="badge badge-success"><%=gallery.length%></span> </a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                        <div id="calendar" class="span7"></div>
+                        <div id="res-form" class="span4"></div>
+                    </div>
+                    <div class="tab-pane" id="tab2"></div>
+                    <div class="tab-pane" id="tab3"></div>
+                    <div class="tab-pane" id="tab4"></div>
+                </div>
+            </div>
+        </div>
+    </script>
 
 {% endblock %}
 
 {% block javascripts %}
 
     <script type="text/javascript">
-        var truncate = function(cad, length, radical){
-            if(!radical){
-                return cad.length < length ? cad : cad.substr(0, length)+'...';
+        var truncate = function (cad, length, radical) {
+            if (!radical) {
+                return cad.length < length ? cad : cad.substr(0, length) + '...';
             }
-            else{
-                var aux, i = length, result = cad.substr(0,length);
-                while(i < cad.length && (aux = cad.substr(i, 1)) != undefined && aux != ' ' ){
+            else {
+                var aux, i = length, result = cad.substr(0, length);
+                while (i < cad.length && (aux = cad.substr(i, 1)) != undefined && aux != ' ') {
                     result += aux;
                     i++;
                 }
-                return result+'...';
+                return result + '...';
             }
         }
         var App = App || {
@@ -211,7 +344,7 @@
                 contact: '{{ path('pagina_estatica', {'tpl': 'contact'}) }}'
             },
             title: "{{ entreprise }}",
-            Settings : {
+            Settings: {
                 logo: '{{ asset('img/logo.png') }}',
                 urlLocations: "{{ path('location') }}",
                 ajax_loader: '{{ asset('img/ajax-loader.gif') }}'
@@ -227,7 +360,7 @@
     {{ parent() }}
 
     <script type="text/javascript">
-        $(function(){
+        $(function () {
 
             App.Session = Backbone.Model.extend({
 
@@ -236,7 +369,7 @@
                 flashes: '',
                 user: null,
 
-                load: function(){
+                load: function () {
 
                 }
 
@@ -244,8 +377,8 @@
 
             App.init();
             /*new App.SliderView({ collection: gites, el: $("#hero")});
-            new App.FeaturesView({ collection: gites, el: $("#features") });
-            new App.PricesView({ collection: gites, el: $("#pricing")});*/
+             new App.FeaturesView({ collection: gites, el: $("#features") });
+             new App.PricesView({ collection: gites, el: $("#pricing")});*/
         });
     </script>
 {% endblock %}

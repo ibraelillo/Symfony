@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="1">
+        <source>contact</source>
+        <target>contact</target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>signup</source>
+        <target>Devenir client</target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source>entrer</source>
+        <target>entrer</target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source>username</source>
+        <target>client</target>
+      </trans-unit>
+      <trans-unit id="5">
+        <source>password</source>
+        <target>mot de passe</target>
+      </trans-unit>
+      <trans-unit id="6">
+        <source>remember_me</source>
+        <target>Me souvenir</target>
+      </trans-unit>
+      <trans-unit id="7">
+        <source>sign_in</source>
+        <target>entrer</target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source>or</source>
+        <target>ou</target>
+      </trans-unit>
+      <trans-unit id="9">
+        <source>sign_in_with</source>
+        <target>entrer avec</target>
+      </trans-unit>
+      <trans-unit id="10">
+        <source>about.us</source>
+        <target>Nous</target>
+      </trans-unit>
+      <trans-unit id="11">
+        <source>entreprise.description</source>
+        <target>Casas Thomanon est une entreprise dédiée à la location de gites et villa touristiques à Saint François, Guadeloupe. Implantée depuis 2006, nous répondons à vos attentes pour rendre vos vacances le plus agréable possible.</target>
+      </trans-unit>
+      <trans-unit id="12">
+        <source>create.your.account</source>
+        <target>Creer votre compte</target>
+      </trans-unit>
+      <trans-unit id="13">
+        <source>save</source>
+        <target>Enregistrer</target>
+      </trans-unit>
+      <trans-unit id="14">
+        <source>already.have.account</source>
+        <target>Avez-vous déjà une compte?</target>
+      </trans-unit>
+      <trans-unit id="15">
+        <source>signin.as.client</source>
+        <target>Entrer comme client</target>
+      </trans-unit>
+      <trans-unit id="16">
+        <source>price</source>
+        <target>prix</target>
+      </trans-unit>
+      <trans-unit id="17">
+        <source>for.week</source>
+        <target>Par semaine</target>
+      </trans-unit>
+      <trans-unit id="18">
+        <source>regresives.offerts</source>
+        <target>__regresives.offerts</target>
+      </trans-unit>
+      <trans-unit id="19">
+        <source>contacter</source>
+        <target>contacter</target>
+      </trans-unit>
+      <trans-unit id="20">
+        <source>services</source>
+        <target>__services</target>
+      </trans-unit>
+      <trans-unit id="21">
+        <source>cuisine</source>
+        <target>cuisine</target>
+      </trans-unit>
+      <trans-unit id="22">
+        <source>wifi</source>
+        <target>Internet / wifi</target>
+      </trans-unit>
+      <trans-unit id="23">
+        <source>people</source>
+        <target>personnes</target>
+      </trans-unit>
+      <trans-unit id="24">
+        <source>payment</source>
+        <target>paiment</target>
+      </trans-unit>
+      <trans-unit id="25">
+        <source>info.basic</source>
+        <target>Information general</target>
+      </trans-unit>
+      <trans-unit id="26">
+        <source>comments</source>
+        <target>Commentaires</target>
+      </trans-unit>
+      <trans-unit id="27">
+        <source>Maximum</source>
+        <target>Maximum</target>
+      </trans-unit>
+      <trans-unit id="28">
+        <source>more.info</source>
+        <target>Plus</target>
+      </trans-unit>
+      <trans-unit id="29">
+        <source>reserve</source>
+        <target>Réserve</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

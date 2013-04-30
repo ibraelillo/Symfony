@@ -108,6 +108,25 @@ class ReservacionController extends Controller
                 $em->persist($entity);
                 $em->flush();
 
+
+                $message = \Swift_Message::newInstance()
+                    ->setSubject(sprintf(
+                        "Réserve #%s pour %s", $entity->getId(), $entity->getLocation()
+                    ))
+                    ->setFrom(array('avisos@casasthomanon.com' =>"Casas Thomanon"))
+                    ->setTo($this->container->getParameter('web_contact'))
+                    ->setContentType('text/html')
+                    ->setBody(
+                        $this->renderView(
+                            'GitesBundle:Reservation:show.html.twig',
+                            array('entity' => $entity)
+                        ), 'text/html'
+                    )
+                ;
+                $this->get('mailer')->send($message);
+
+
+
                 return $this->redirect($this->generateUrl('location_reservaciones_show', array('slug'=>$slug, 'id' => $entity->getId())));
             }
         }

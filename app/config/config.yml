@@ -9,7 +9,7 @@ imports:
 
 framework:
     esi:             { enabled: false }
-    #translator:      { fallback: %locale% }
+    translator:      { fallback: %locale% }
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -39,7 +39,7 @@ assetic:
     debug:          %kernel.debug%
     use_controller: false
     bundles:        []
-    java: /usr/bin/java
+    java: C:\Program Files\Java\jre6\bin\java.exe
     filters:
         cssembed:
             jar: %kernel.root_dir%/Resources/java/cssembed-0.4.5.jar

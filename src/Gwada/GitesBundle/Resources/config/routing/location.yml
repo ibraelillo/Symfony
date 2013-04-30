@@ -3,7 +3,7 @@ location:
     defaults: { _controller: "GitesBundle:Location:index" }
 
 location_show:
-    pattern:  /{id}/show
+    pattern:  /{slug}/show
     defaults: { _controller: "GitesBundle:Location:show" }
 
 

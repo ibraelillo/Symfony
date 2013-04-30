@@ -1,5 +1,5 @@
 <?php
-/*
+
 if (!isset($_SERVER['HTTP_HOST'])) {
     exit('This script cannot be run from the CLI. Run it from a browser.');
 }
@@ -11,7 +11,7 @@ if (!in_array(@$_SERVER['REMOTE_ADDR'], array(
     header('HTTP/1.0 403 Forbidden');
     exit('This script is only accessible from localhost.');
 }
-*/
+
 require_once dirname(__FILE__).'/../app/SymfonyRequirements.php';
 
 $symfonyRequirements = new SymfonyRequirements();
@@ -68,7 +68,7 @@ $minorProblems = $symfonyRequirements->getFailedRecommendations();
                             This script will guide you through the basic configuration of your project.
                             You can also do the same by editing the ‘<strong>app/config/parameters.yml</strong>’ file directly.
                         </p>
-                        <?php phpinfo() ?>
+
                         <?php if (count($majorProblems)): ?>
                             <h2 class="ko">Major problems</h2>
                             <p>Major problems have been detected and <strong>must</strong> be fixed before continuing:</p>

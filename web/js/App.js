@@ -293,7 +293,7 @@ App.FeaturesView = App.View.extend({
         return this;
     }
 });
-App.PricesView = App.View.extend({
+App.AboutUsView = App.View.extend({
     initialize: function(){
         _.bindAll(this);
 
@@ -303,31 +303,7 @@ App.PricesView = App.View.extend({
         this.collection.on('change', this.render, this);
     },
     render: function(){
-        this.el.html("");
-        var container = $('<div/>').addClass('container').append(
-            '<h2 class="section_header">' +
-                '<hr class="left visible-desktop">' +
-                '<span>Prix</span>' +
-                '<hr class="right visible-desktop">' +
-                '</h2>'
-        );
-
-        this.el.append(container.hide().fadeIn('slow'));
-        var row = $('<div/>').addClass('row');
-        container.append(row.hide().fadeIn('slow'));
-
-        var copy = this.collection.slice(0,3);
-        copy.push(copy.shift());
-        copy.push(copy.shift());
-
-        _.each(copy, function (model) {
-            row.append((new App.ItemView({
-                model: model,
-                collection: this.collection,
-                template_name: "#location-pricing",
-                className: 'span4'
-            })).render().el.hide().fadeIn(2000, 'linear'));
-        }, this);
+        this.el.html("").append($('#about-us').html());
         return this;
     }
 });
@@ -350,7 +326,7 @@ App.PortadaView = App.View.extend({
     updateView: function(){
         new App.SliderView({ collection: this.collection, el: $("#hero")}).render();
         new App.FeaturesView({ collection: this.collection, el: $("#features") }).render();
-        new App.PricesView({ collection: this.collection, el: $("#pricing")}).render();
+        new App.AboutUsView({ collection: this.collection, el: $("#pricing")}).render();
     },
     render: function(){
         this.el.html("");
@@ -591,6 +567,7 @@ App.LocationsView = App.View.extend({
 
 
 App.LocationDetailView = Backbone.View.extend({
+    template: _.template($('#reservation-navtabs').html()),
    initialize: function(){
        _.bindAll(this);
        this.el = $(this.el);
@@ -617,41 +594,7 @@ App.LocationDetailView = Backbone.View.extend({
 
 
 
-       this.el.html("").append(
-           '    <div class="container" id="portfolio">\
-                    <h2 class="section_header left"><span>'+ this.model.get('nombre')+' </span><hr class="right visible-desktop"> </h2>\
-                   <div class="row-fluid tabbable">\
-                    <div class="navbar">\
-                        <div class="navbar-inner"> \
-                            <div class="container-fluid"> \
-                                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">\
-                                   <span class="icon-bar"></span>\
-                                   <span class="icon-bar"></span>\
-                                   <span class="icon-bar"></span>\
-                               </a>\
-                               <div class="nav-collapse"> \
-                                   <ul class="nav nav-pills">\
-                                       <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon-calendar"></i> R&eacute;server</a></li>\
-                                       <li><a href="#tab2" data-toggle="tab"><i class="icon-info-sign"></i> Plus d\' info</a></li>\
-                                       <li><a href="#tab3" data-toggle="tab"><i class="icon-camera"></i> Photos <span class="badge badge-success">'+ this.model.get('gallery').length +'</span> </a></li>\
-                                       <li><a href="#tab4" data-toggle="tab"><i class="icon-facetime-video"></i> Videos <span class="badge badge-success">'+ 0 +'</span> </a></li>\
-                                   </ul>\
-                               </div>\
-                            </div>\
-                       </div>\
-                    </div>\
-                       <div class="tab-content">\
-                           <div class="tab-pane active" id="tab1">\
-                               <div id="calendar" class="span7"></div>\
-                               <div id="res-form" class="span4"></div> \
-                           </div>\
-                            <div class="tab-pane" id="tab2"></div>\
-                           <div class="tab-pane" id="tab3"></div>\
-                           <div class="tab-pane" id="tab4"></div>\
-                       </div>\
-                  </div>\
-              </div>'
-       );
+       this.el.html(this.template(this.model.toJSON()));
 
 
        new App.ItemView({
@@ -692,43 +635,9 @@ App.NavbarView = Backbone.View.extend({
     },
     render: function(){
         this.el.prepend(
-            '<a href="#" class="scrolltop"><span>up</span></a>' +
-                '<div class="navbar navbar-fixed-top" id="barra">' +
-                '    <div class="navbar-inner">' +
-                '        <div class="container">' +
-                '           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">' +
-                '              <span class="icon-bar"></span>' +
-                '              <span class="icon-bar"></span>' +
-                '              <span class="icon-bar"></span>' +
-                '           </a>' +
-                '           <a class="brand scroller" data-section="body" href="#!/home">' +
-                '               <img src="'+ App.Settings.logo +'" alt="logo" />' +
-                '           </a>' +
-                '           <div class="nav-collapse collapse">' +
-                '                <ul class="nav pull-right">' +
-                '                   <li><a href="#!/locations" class="scroller" data-section="#home"><i class="icon-home"></i> Locations</a></li>' +
-                '                   <li><a href="#!/contact" class="scroller" data-section="#footer"><i class="icon-envelope"></i> Contact</a></li>  ' +
-                '                   <li><a href="#!/signup"><i class="icon-group"></i> Devenir client</a></li>' +
-                '                   <li class="dropdown">'+
-                                        '<a class="dropdown-toggle" href="#" data-toggle="dropdown">Entrer <strong class="caret"></strong></a>\
-                                        <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">\
-                                            <form method="post" action="#!/login" accept-charset="UTF-8">\
-                                                <input style="margin-bottom: 15px;" type="text" placeholder="Username" id="username" name="username">\
-                                                <input style="margin-bottom: 15px;" type="password" placeholder="Mot de passe" id="password" name="password">\
-                                                <input style="float: left; margin-right: 10px;" type="checkbox" name="remember-me" id="remember-me" value="1">\
-                                                <label class="string optional" for="user_remember_me">Me souvenir</label>\
-                                                <button class="btn btn-primary btn-block" type="submit" id="sign-in"> <i class="icon-signin"></i> Entrer</button>\
-                                                <label style="text-align:center;margin-top:5px">ou</label>\
-                                                <button class="btn btn-primary btn-block" type="button" id="sign-in-google"><i class="icon-google-plus"></i> Sign In with Google</button>\
-                                                <button class="btn btn-primary btn-block" type="button" id="sign-in-twitter"><i class="icon-facebook-sign"></i> Sign In with Facebook</button>\
-                                            </form>\
-                                        </div>\
-                                    </li>' +
-                '                </ul>' +
-                '             </div>' +
-                '        </div>' +
-                '    </div>' +
-                '</div>'
+            _.template($('#navbar').html(), {
+               logo: App.Settings.logo
+            })
         );
     }
 });
@@ -779,6 +688,16 @@ App.Router = Backbone.Router.extend({
         '!/location/:slug/reservar': 'reservarAction',
         '!/locations' : 'allAction',
         '!/signup': 'signup'
+    },
+
+    initialize: function() {
+        return this.bind('all', this._trackPageview);
+    },
+    _trackPageview: function() {
+        var url;
+
+        url = Backbone.history.getFragment();
+        return _gaq.push(['_trackPageview', "/" + url]);
     },
 
     clearView: function(){

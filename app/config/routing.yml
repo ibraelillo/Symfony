@@ -12,7 +12,9 @@ portada:
     pattern: /
     defaults: { _controller: "GitesBundle:Default:index" }
 
-
+sitemap:
+    pattern: /sitemap.xml
+    defaults: { _controller: "GitesBundle:Default:sitemap" }
 ## rutas de sonata
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'

@@ -41,11 +41,11 @@ class LocationController extends Controller
      * Finds and displays a Location entity.
      *
      */
-    public function showAction($id)
+    public function showAction($slug)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('GitesBundle:Location')->find($id);
+        $entity = $em->getRepository('GitesBundle:Location')->findOneBySlug($slug);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Location entity.');
@@ -56,6 +56,9 @@ class LocationController extends Controller
             return $this->render('GitesBundle:Location:show.json.twig', array(
                 'e' => $entity,
             ), new JsonResponse());
+        }
+        else{
+            return $this->redirect($this->generateUrl("portada")."#!/location/".$entity->getSlug());
         }
 
         return $this->render('GitesBundle:Location:show.html.twig', array(

@@ -43,20 +43,21 @@
         <div class="container">
             <div class="row">
                 <div class="span4">
-                    <h3>L' equipe {{ entreprise|title }}</h3>
+                    <h3>{{ "powering"|trans}} {{ entreprise|title }}</h3>
                     <div class="blog_post">
                         <div class="row">
                             <div class="span2">
-                                <a href="blog.html">
-                                    <img src="{{ asset('img/pic1.jpg') }}" alt="post image" class="img-circle" />
+                                <a href="http://www.espinosoft.com">
+                                    <img src="{{ asset('img/pic1.jpg') }}" alt="espinosoft.com" class="img-circle" />
                                 </a>
                             </div>
                             <div class="span2">
-                                <a href="blog.html" class="title">
-                                    Lorem Ipsum is simply dummy
+                                <a href="http://www.espinosoft.com" class="title">
+                                    Espinosoft.com
                                 </a>
                                 <div class="intro">
-                                    There are many variations of passages of Lorem alteration in some form by injected look even slightly believable.
+                                    Casas Thomanon est une entreprise dédiée à la location de gites et villa touristiques à Saint François, Guadeloupe.
+                                    Implantée depuis 2006, nous répondons à vos attentes pour rendre vos vacances le plus agréable possible.
                                 </div>
                                 <div class="date">
                                     Oct 22. 2012
@@ -111,6 +112,7 @@
             </div>
         </div>
     </div>
+    <a href="http://www.prchecker.net" title="PageRank Checker"><img src="http://www.prchecker.net/lookup.php?site=www.casasthomanon.com&badge=img1"/></a>
 {% endblock %}
 
 
@@ -118,7 +120,7 @@
 
 
 {% block javascripts %}
-    {% javascripts
+    {#% javascripts
         'js/jquery.js'
         'js/bootstrap.min.js'
         'js/theme.js'
@@ -132,9 +134,9 @@
 
     output="js/minimized/app.min.js" %}
     <script src="{{ asset_url }}" type="text/javascript"></script>
-    {% endjavascripts %}
+{% endjavascripts % #}
 
-    <!--script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/theme.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/json2.js') }}"></script>
@@ -143,6 +145,6 @@
     <script type="text/javascript" src="{{ asset('js/distribution/backbone-forms.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/distribution/templates/bootstrap.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/fullcalendar/fullcalendar.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/App.js') }}"></script-->
+    <script type="text/javascript" src="{{ asset('js/App.js') }}"></script>
 
 {% endblock %}

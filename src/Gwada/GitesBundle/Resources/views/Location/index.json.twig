@@ -4,7 +4,7 @@
     {
 
         "nombre": "{{ e.nombre|title }}",
-        "url":  "{{ path('location_show', { 'id': e.id }) }}",
+        "url":  "{{ path('location_show', { 'slug': e.slug }) }}",
         "capacidad": {{ e.capacidad }},
         "direccion": "{{ e.direccion }}",
         "descripcion": "{{ e.descripcion|json_encode }}",

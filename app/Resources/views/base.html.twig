@@ -1,20 +1,45 @@
 <!DOCTYPE html>
 <html lang="{{ app.request.get('locale') }}">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Ing Ibrael Espinosa <ibrael.avalach@gmail.com">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Ing Ibrael Espinosa <ibrael.avalach@gmail.com">
+    <meta name="keywords"
+          content="'Casas Thomanon, Destination de vacances, Gites, tourisme, villa, bungalow, studio, location, Guadeloupe, vacances, tourisme"/>
+    <meta name="description" description="Entreprise dédié à la location de gites de vacances a Dubedou,
+                    Saint François, dans l' Ille de Guadeloupe. Nous avons plusieurs locations disponibles tout l' année. "/>
+
+    <title>Casas Thomanon | Locations de vacances à Saint François Guadeloupe - {% block title %}{% endblock %}</title>
+
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 
 
+    {% block templates %}{% endblock %}
 
-        <title>Casas Thomanon - {% block title %}{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
-        {% block templates %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+</head>
+<body>
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    var pluginUrl =
+            '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+    _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+    _gaq.push(['_setAccount', 'UA-39783127-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
+{% block body %}{% endblock %}
+{% block javascripts %}{% endblock %}
+</body>
 </html>

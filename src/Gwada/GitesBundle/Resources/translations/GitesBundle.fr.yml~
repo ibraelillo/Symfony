@@ -1,0 +1,29 @@
+contact: contact
+signup: 'Devenir client'
+entrer: __entrer
+username: client
+password: 'mot de passe'
+remember_me: 'Me souvenir'
+sign_in: entrer
+or: ou
+sign_in_with: 'entrer avec'
+about.us: Nous
+entreprise.description: __entreprise.description
+create.your.account: __create.your.account
+save: __save
+already.have.account: __already.have.account
+signin.as.client: __signin.as.client
+price: __price
+for.week: __for.week
+regresives.offerts: __regresives.offerts
+contacter: __contacter
+services: __services
+cuisine: __cuisine
+wifi: __wifi
+people: __people
+payment: __payment
+info.basic: __info.basic
+comments: __comments
+Maximum: __Maximum
+more.info: __more.info
+reserve: __reserve

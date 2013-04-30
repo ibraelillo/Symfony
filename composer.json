@@ -29,7 +29,8 @@
         "gedmo/doctrine-extensions": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/data-fixtures": "v1.0.0-ALPHA3",
-        "sonata-project/formatter-bundle": "dev-master"
+        "sonata-project/formatter-bundle": "dev-master",
+        "sonata-project/intl-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

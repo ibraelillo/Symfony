@@ -1,70 +1,51 @@
 {% extends '::base.html.twig' %}
 
-{% block body -%}
-    <h1>Reservacion</h1>
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/minimized/app.min.css') }}"/>
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
+
+{% endblock %}
+
+{% block body -%}
+    <div class="container">
+        <div class="header">
+            <h2><a href="{{ path('location_reservaciones_show', { 'slug': entity.location.slug, 'id': entity.id}) }}">Reserve pour {{ entity.location }}</a> </h2>
+        </div>
+        <table class="table table-bordered table-condensed">
+            <tbody>
             <tr>
                 <th>Email</th>
-                <td>{{ entity.email }}</td>
+                <td><a href="mailto:{{ entity.email }}">{{ entity.email }}</a></td>
             </tr>
             <tr>
-                <th>Telefono</th>
+                <th>Tel</th>
                 <td>{{ entity.telefono }}</td>
             </tr>
             <tr>
-                <th>Nombre</th>
+                <th>Nom</th>
                 <td>{{ entity.nombre }}</td>
             </tr>
             <tr>
-                <th>Fecha_entrada</th>
-                <td>{{ entity.fechaentrada|date('Y-m-d H:i:s') }}</td>
+                <th>Entrée</th>
+                <td>{{ entity.fechaentrada| date("l d F, Y") }}</td>
             </tr>
             <tr>
-                <th>Fecha_publicacion</th>
-                <td>{{ entity.fechapublicacion|date('Y-m-d H:i:s') }}</td>
+                <th>Sortie</th>
+                <td>{{ entity.fechasalida|date('d m Y') }}</td>
             </tr>
             <tr>
-                <th>Fecha_salida</th>
-                <td>{{ entity.fechasalida|date('Y-m-d H:i:s') }}</td>
+                <th>Quantit&eacute;</th>
+                <td>{{ entity.capacidad }} personnes</td>
             </tr>
             <tr>
-                <th>Capacidad</th>
-                <td>{{ entity.capacidad }}</td>
+                <th>Confirm&eacute;</th>
+                <td><i class="{{ entity.confirmada ? "icon-ok" : "icon-remove" }}"></i></td>
             </tr>
             <tr>
-                <th>Confirmada</th>
-                <td>{{ entity.confirmada }}</td>
+                <th>Attendu</th>
+                <td><i class="{{ entity.atendida  ? "icon-ok" : "icon-remove" }}"></i></td>
             </tr>
-            <tr>
-                <th>Atendida</th>
-                <td>{{ entity.atendida }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('location_{id}_reservaciones') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('location_{id}_reservaciones_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('location_{id}_reservaciones_delete', { 'id': entity.id }) }}" method="post">
-            <input type="hidden" name="_method" value="DELETE" />
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

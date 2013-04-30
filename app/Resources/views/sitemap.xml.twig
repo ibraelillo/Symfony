@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+    {% for loc in locations %}
+    <url>
+        <loc>{{ url('portada') }}#!/location/{{ loc.slug }}</loc>
+        <lastmod>{{ '2013-02-02 00:00:00'|date('c') }}</lastmod>
+    </url>
+    <url>
+        <loc>{{ url('location_show', { 'slug': loc.slug }) }}</loc>
+        <lastmod>{{ '2013-02-02 00:00:00'|date('c') }}</lastmod>
+        {% if loc.hasPortada %}
+        <image:image>
+            <image:loc>{{ url('sonata_media_download', { 'id': loc.portada.id, 'format': 'big' }) }}</image:loc>
+        </image:image>
+        {% endif %}
+    </url>
+    {% endfor %}
+    <url>
+        <loc>{{ url('pagina_estatica', { 'tpl': 'contact'}) }}</loc>
+        <changefreq>Never</changefreq>
+    </url>
+    <url>
+        <loc>{{ url('portada') }}/#!/locations</loc>
+        <lastmod>{{ '2013-02-02 00:00:00'|date('c') }}</lastmod>
+    </url>
+    <url>
+        <loc>{{ url('portada') }}/#!/contact</loc>
+    </url>
+    <url>
+        <loc>{{ url('portada') }}/#!/signup</loc>
+    </url>
+    <url>
+        <loc>{{ url('portada') }}/#!/signin</loc>
+    </url>
+</urlset>

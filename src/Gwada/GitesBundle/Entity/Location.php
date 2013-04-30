@@ -78,6 +78,45 @@ class Location
     }
 
 
+    protected function getMediasByProvider($provider)
+    {
+        $medias = new ArrayCollection();
+
+        foreach($this->getGallery()->getGalleryHasMedias() as $g)
+            foreach($g->getMedia() as $m)
+                $medias->add($m);
+
+        $filtro = function($provider){
+            return function(MediaInterface $item) use ($provider){
+                return $item->getProviderName() == $provider;
+            };
+        };
+
+        return $medias->filter($filtro($provider));
+    }
+
+    public function getVideos()
+    {
+        return $this->getMediasByProvider('sonata.media.provider.youtube');
+    }
+
+
+    public function hasVideo()
+    {
+        $videos = $this->getMediasByProvider('sonata.media.provider.youtube');
+        return $videos->count() > 0;
+    }
+
+    public function hasPortada()
+    {
+        return $this->getPortada() != null;
+    }
+
+    public function getPortada()
+    {
+        return $this->getGallery()->getGalleryHasMedias()->first()->getMedia();
+    }
+
 
     public function getPrecio()
     {
